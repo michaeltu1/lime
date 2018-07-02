@@ -26,6 +26,7 @@ class LimeBase(object):
         self.kernel_fn = kernel_fn
         self.verbose = verbose
         self.random_state = check_random_state(random_state)
+        self.model = None
 
     @staticmethod
     def generate_lars_path(weighted_data, weighted_labels):
@@ -167,6 +168,8 @@ class LimeBase(object):
             labels_column, sample_weight=weights)
 
         local_pred = easy_model.predict(neighborhood_data[0, used_features].reshape(1, -1))
+
+        self.model = easy_model
 
         if self.verbose:
             print('Intercept', easy_model.intercept_)
