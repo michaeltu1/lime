@@ -1,0 +1,4022 @@
+
+% Default to the notebook output style
+
+    
+
+
+% Inherit from the specified cell style.
+
+
+
+
+    
+\documentclass[11pt]{article}
+
+    
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    
+
+    
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatability definitions
+    \def\gt{>}
+    \def\lt{<}
+    % Document parameters
+    \title{Image Classification Testing part 2}
+    
+    
+    
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    Here is a simpler example of the use of LIME for image classification by
+using Keras (v2 or greater)
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{k+kn}{import} \PY{n+nn}{os}
+        \PY{k+kn}{import} \PY{n+nn}{keras}
+        \PY{k+kn}{from} \PY{n+nn}{keras}\PY{n+nn}{.}\PY{n+nn}{applications} \PY{k}{import} \PY{n}{inception\PYZus{}v3} \PY{k}{as} \PY{n}{inc\PYZus{}net}
+        \PY{k+kn}{from} \PY{n+nn}{keras}\PY{n+nn}{.}\PY{n+nn}{preprocessing} \PY{k}{import} \PY{n}{image}
+        \PY{k+kn}{from} \PY{n+nn}{keras}\PY{n+nn}{.}\PY{n+nn}{applications}\PY{n+nn}{.}\PY{n+nn}{imagenet\PYZus{}utils} \PY{k}{import} \PY{n}{decode\PYZus{}predictions}
+        \PY{k+kn}{from} \PY{n+nn}{skimage}\PY{n+nn}{.}\PY{n+nn}{io} \PY{k}{import} \PY{n}{imread}
+        \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+        \PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
+        \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+        
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Notebook run using keras:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{keras}\PY{o}{.}\PY{n}{\PYZus{}\PYZus{}version\PYZus{}\PYZus{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Using TensorFlow backend.
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Notebook run using keras: 2.2.0
+
+    \end{Verbatim}
+
+    \section{Using Inception}\label{using-inception}
+
+Here we create a standard InceptionV3 pretrained model and use it on
+images by first preprocessing them with the preprocessing tools
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{n}{inet\PYZus{}model} \PY{o}{=} \PY{n}{inc\PYZus{}net}\PY{o}{.}\PY{n}{InceptionV3}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{k}{def} \PY{n+nf}{transform\PYZus{}img\PYZus{}fn}\PY{p}{(}\PY{n}{path\PYZus{}list}\PY{p}{)}\PY{p}{:}
+            \PY{n}{out} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+            \PY{k}{for} \PY{n}{img\PYZus{}path} \PY{o+ow}{in} \PY{n}{path\PYZus{}list}\PY{p}{:}
+                \PY{n}{img} \PY{o}{=} \PY{n}{image}\PY{o}{.}\PY{n}{load\PYZus{}img}\PY{p}{(}\PY{n}{img\PYZus{}path}\PY{p}{,} \PY{n}{target\PYZus{}size}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{299}\PY{p}{,} \PY{l+m+mi}{299}\PY{p}{)}\PY{p}{)}
+                \PY{n}{x} \PY{o}{=} \PY{n}{image}\PY{o}{.}\PY{n}{img\PYZus{}to\PYZus{}array}\PY{p}{(}\PY{n}{img}\PY{p}{)}
+                \PY{n}{x} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{expand\PYZus{}dims}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+                \PY{n}{x} \PY{o}{=} \PY{n}{inc\PYZus{}net}\PY{o}{.}\PY{n}{preprocess\PYZus{}input}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+                \PY{n}{out}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+            \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{vstack}\PY{p}{(}\PY{n}{out}\PY{p}{)}
+\end{Verbatim}
+
+
+    \subsection{Let's see the top 5 prediction for some
+image}\label{lets-see-the-top-5-prediction-for-some-image}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{n}{images} \PY{o}{=} \PY{n}{transform\PYZus{}img\PYZus{}fn}\PY{p}{(}\PY{p}{[}\PY{n}{os}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cat\PYZus{}mouse.jpg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} I\PYZsq{}m dividing by 2 and adding 0.5 because of how this Inception represents images}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{images}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{/} \PY{l+m+mi}{2} \PY{o}{+} \PY{l+m+mf}{0.5}\PY{p}{)}
+        \PY{n}{preds} \PY{o}{=} \PY{n}{inet\PYZus{}model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{images}\PY{p}{)}
+        \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{decode\PYZus{}predictions}\PY{p}{(}\PY{n}{preds}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{:}
+            \PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+('n02133161', 'American\_black\_bear', 0.63716227)
+('n02105056', 'groenendael', 0.031817853)
+('n02104365', 'schipperke', 0.029944101)
+('n01883070', 'wombat', 0.028509347)
+('n01877812', 'wallaby', 0.02509332)
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_6_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    (class, description, probability)
+
+    \subsection{Explanation}\label{explanation}
+
+Now let's get an explanation
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{o}{\PYZpc{}}\PY{k}{load\PYZus{}ext} autoreload
+        \PY{o}{\PYZpc{}}\PY{k}{autoreload} 2
+        \PY{k+kn}{import} \PY{n+nn}{os}\PY{o}{,}\PY{n+nn}{sys}
+        \PY{k}{try}\PY{p}{:}
+            \PY{k+kn}{import} \PY{n+nn}{lime}
+        \PY{k}{except}\PY{p}{:}
+            \PY{n}{sys}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{os}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{..}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{..}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{} add the current directory}
+            \PY{k+kn}{import} \PY{n+nn}{lime}
+        \PY{k+kn}{from} \PY{n+nn}{lime} \PY{k}{import} \PY{n}{lime\PYZus{}image}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{n}{explainer} \PY{o}{=} \PY{n}{lime\PYZus{}image}\PY{o}{.}\PY{n}{LimeImageExplainer}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    hide\_color is the color for a superpixel turned OFF. Alternatively, if
+it is NONE, the superpixel will be replaced by the average of its
+pixels. Here, we set it to 0 (in the representation used by inception
+model, 0 means gray)
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}8}]:} \PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{time}
+        \PYZsh{} Hide color is the color for a superpixel turned OFF. Alternatively, if it is NONE, the superpixel will be replaced by the average of its pixels
+        explanation = explainer.explain\PYZus{}instance(images[0], inet\PYZus{}model.predict, top\PYZus{}labels=5, hide\PYZus{}color=0, num\PYZus{}samples=1000)
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+CPU times: user 11.9 s, sys: 3.27 s, total: 15.2 s
+Wall time: 10.6 s
+
+    \end{Verbatim}
+
+    Follows same steps as LimeTextExp -\/- i.e. get neighborhood, train
+model to be like og model\\
+Perturb - on/off superpixels
+
+    Image classifiers are a bit slow. Notice that an explanation on my
+Surface Book dGPU took 1min 29s
+
+    \subsubsection{Now let's see the explanation for the top class ( Black
+Bear)}\label{now-lets-see-the-explanation-for-the-top-class-black-bear}
+
+    We can see the top 5 superpixels that are most positive towards the
+class with the rest of the image hidden
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}9}]:} \PY{k+kn}{from} \PY{n+nn}{skimage}\PY{n+nn}{.}\PY{n+nn}{segmentation} \PY{k}{import} \PY{n}{mark\PYZus{}boundaries}
+\end{Verbatim}
+
+
+    Image Segmentation - process of assigning a label to every pixel in an
+image such that pixels with the same label share certain characteristics
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}10}]:} \PY{n}{temp}\PY{p}{,} \PY{n}{mask} \PY{o}{=} \PY{n}{explanation}\PY{o}{.}\PY{n}{get\PYZus{}image\PYZus{}and\PYZus{}mask}\PY{p}{(}\PY{l+m+mi}{295}\PY{p}{,} \PY{n}{positive\PYZus{}only}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{num\PYZus{}features}\PY{o}{=}\PY{l+m+mi}{5}\PY{p}{,} \PY{n}{hide\PYZus{}rest}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{mark\PYZus{}boundaries}\PY{p}{(}\PY{n}{temp} \PY{o}{/} \PY{l+m+mi}{2} \PY{o}{+} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{n}{mask}\PY{p}{)}\PY{p}{)}
+         
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{explanation}\PY{o}{.}\PY{n}{top\PYZus{}labels}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[295, 224, 223, 106, 104]
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_19_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Or with the rest of the image present:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{n}{temp}\PY{p}{,} \PY{n}{mask} \PY{o}{=} \PY{n}{explanation}\PY{o}{.}\PY{n}{get\PYZus{}image\PYZus{}and\PYZus{}mask}\PY{p}{(}\PY{l+m+mi}{295}\PY{p}{,} \PY{n}{positive\PYZus{}only}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{num\PYZus{}features}\PY{o}{=}\PY{l+m+mi}{5}\PY{p}{,} \PY{n}{hide\PYZus{}rest}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{mark\PYZus{}boundaries}\PY{p}{(}\PY{n}{temp} \PY{o}{/} \PY{l+m+mi}{2} \PY{o}{+} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{n}{mask}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}11}]:} <matplotlib.image.AxesImage at 0x7fd08c0932e8>
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_21_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    We can also see the 'pros and cons' (pros in green, cons in red)
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{n}{temp}\PY{p}{,} \PY{n}{mask} \PY{o}{=} \PY{n}{explanation}\PY{o}{.}\PY{n}{get\PYZus{}image\PYZus{}and\PYZus{}mask}\PY{p}{(}\PY{l+m+mi}{295}\PY{p}{,} \PY{n}{positive\PYZus{}only}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{num\PYZus{}features}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{hide\PYZus{}rest}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{mark\PYZus{}boundaries}\PY{p}{(}\PY{n}{temp} \PY{o}{/} \PY{l+m+mi}{2} \PY{o}{+} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{n}{mask}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}12}]:} <matplotlib.image.AxesImage at 0x7fd08c054438>
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_23_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Or the pros and cons that have weight at least 0.1
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}13}]:} \PY{n}{temp}\PY{p}{,} \PY{n}{mask} \PY{o}{=} \PY{n}{explanation}\PY{o}{.}\PY{n}{get\PYZus{}image\PYZus{}and\PYZus{}mask}\PY{p}{(}\PY{l+m+mi}{295}\PY{p}{,} \PY{n}{positive\PYZus{}only}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{num\PYZus{}features}\PY{o}{=}\PY{l+m+mi}{1000}\PY{p}{,} \PY{n}{hide\PYZus{}rest}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{min\PYZus{}weight}\PY{o}{=}\PY{l+m+mf}{0.1}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{mark\PYZus{}boundaries}\PY{p}{(}\PY{n}{temp} \PY{o}{/} \PY{l+m+mi}{2} \PY{o}{+} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{n}{mask}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}13}]:} <matplotlib.image.AxesImage at 0x7fd06f7d9588>
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_25_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \section{Testing Section!!}\label{testing-section}
+
+    jupyter nbconvert -\/-to script {[}YOUR\_NOTEBOOK{]}.ipynb
+(\textless{}-\/- to convert to python script)
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} \PY{k+kn}{import} \PY{n+nn}{time}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}35}]:} \PY{c+c1}{\PYZsh{} Testing: Adding small shifts to the image, checking corresponding decisions}
+         
+         \PY{c+c1}{\PYZsh{} Original prediction}
+         \PY{n}{alter\PYZus{}image} \PY{o}{=} \PY{n}{transform\PYZus{}img\PYZus{}fn}\PY{p}{(}\PY{p}{[}\PY{n}{os}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cat\PYZus{}mouse.jpg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{]}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+         \PY{n}{preds} \PY{o}{=} \PY{n}{inet\PYZus{}model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{alter\PYZus{}image}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Original Prediction:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+         \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{decode\PYZus{}predictions}\PY{p}{(}\PY{n}{preds}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{p}{)}
+         
+         \PY{n}{cols}\PY{p}{,} \PY{n}{rows} \PY{o}{=} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{68}
+         \PY{n}{fig}\PY{p}{,} \PY{n}{axeslist} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{ncols}\PY{o}{=}\PY{n}{cols}\PY{p}{,} \PY{n}{nrows}\PY{o}{=}\PY{n}{rows}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{5} \PY{o}{*} \PY{n}{cols}\PY{p}{,} \PY{l+m+mi}{5} \PY{o}{*} \PY{n}{rows}\PY{p}{)}\PY{p}{)}
+         \PY{n}{i} \PY{o}{=} \PY{l+m+mi}{0}
+         
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Testing Horizontal Shifts ...}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+         \PY{c+c1}{\PYZsh{} With negative gammas}
+         \PY{n}{gamma} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+         \PY{n}{prediction} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{American\PYZus{}black\PYZus{}bear}\PY{l+s+s2}{\PYZdq{}}
+         \PY{k}{while} \PY{n}{prediction} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{American\PYZus{}black\PYZus{}bear}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{gamma = }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{gamma}\PY{p}{)}\PY{p}{)}
+             \PY{n}{alter\PYZus{}image} \PY{o}{=} \PY{n}{transform\PYZus{}img\PYZus{}fn}\PY{p}{(}\PY{p}{[}\PY{n}{os}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cat\PYZus{}mouse.jpg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{]}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+             \PY{n}{alter\PYZus{}image}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{p}{:}\PY{n}{gamma}\PY{p}{]} \PY{o}{=} \PY{n}{alter\PYZus{}image}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{n}{gamma}\PY{p}{:}\PY{p}{]}
+             \PY{n}{alter\PYZus{}image} \PY{o}{=} \PY{n}{alter\PYZus{}image}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{n}{gamma}\PY{p}{:}\PY{p}{]}
+             \PY{n}{preds} \PY{o}{=} \PY{n}{inet\PYZus{}model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{alter\PYZus{}image}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+             \PY{n}{tup} \PY{o}{=} \PY{n}{decode\PYZus{}predictions}\PY{p}{(}\PY{n}{preds}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+             \PY{n}{prediction} \PY{o}{=} \PY{n}{tup}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}
+             \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{decode\PYZus{}predictions}\PY{p}{(}\PY{n}{preds}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{:}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+             \PY{n+nb}{print}\PY{p}{(}\PY{p}{)}
+             
+             \PY{n}{alt} \PY{o}{=} \PY{n}{alter\PYZus{}image}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+             \PY{n}{alt}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{where}\PY{p}{(}\PY{n}{alt} \PY{o}{\PYZgt{}} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{1}
+             \PY{n}{alt}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{where}\PY{p}{(}\PY{n}{alt} \PY{o}{\PYZlt{}} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{]} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+         
+             \PY{n}{axeslist}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{alt} \PY{o}{/} \PY{l+m+mi}{2} \PY{o}{+} \PY{o}{.}\PY{l+m+mi}{5}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{gray}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+             \PY{n}{axeslist}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{gamma: }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n+nb}{round}\PY{p}{(}\PY{n}{gamma}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+             \PY{n}{axeslist}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}axis\PYZus{}off}\PY{p}{(}\PY{p}{)}
+             \PY{n}{i} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+             
+             \PY{n}{ex\PYZus{}5} \PY{o}{=} \PY{n}{lime\PYZus{}image}\PY{o}{.}\PY{n}{LimeImageExplainer}\PY{p}{(}\PY{p}{)}
+             \PY{n}{expl\PYZus{}5} \PY{o}{=} \PY{n}{ex\PYZus{}5}\PY{o}{.}\PY{n}{explain\PYZus{}instance}\PY{p}{(}\PY{n}{alt}\PY{p}{,} \PY{n}{inet\PYZus{}model}\PY{o}{.}\PY{n}{predict}\PY{p}{,} \PY{n}{top\PYZus{}labels}\PY{o}{=}\PY{l+m+mi}{5}\PY{p}{,} \PY{n}{hide\PYZus{}color}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{num\PYZus{}samples}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{expl\PYZus{}5}\PY{o}{.}\PY{n}{top\PYZus{}labels}\PY{p}{)}\PY{p}{)}
+             \PY{n}{temp}\PY{p}{,} \PY{n}{mask} \PY{o}{=} \PY{n}{expl\PYZus{}5}\PY{o}{.}\PY{n}{get\PYZus{}image\PYZus{}and\PYZus{}mask}\PY{p}{(}\PY{n}{expl\PYZus{}5}\PY{o}{.}\PY{n}{top\PYZus{}labels}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{positive\PYZus{}only}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{num\PYZus{}features}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{hide\PYZus{}rest}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+             
+             \PY{n}{alt\PYZus{}marked} \PY{o}{=} \PY{n}{mark\PYZus{}boundaries}\PY{p}{(}\PY{n}{temp} \PY{o}{/} \PY{l+m+mi}{2} \PY{o}{+} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{n}{mask}\PY{p}{)}
+             \PY{n}{axeslist}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{alt\PYZus{}marked}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{gray}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+             \PY{n}{axeslist}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{gamma: }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n+nb}{round}\PY{p}{(}\PY{n}{gamma}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+             \PY{n}{axeslist}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}axis\PYZus{}off}\PY{p}{(}\PY{p}{)}
+             \PY{n}{i} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+             
+             \PY{n}{gamma} \PY{o}{\PYZhy{}}\PY{o}{=} \PY{l+m+mi}{1}
+         
+         \PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Original Prediction:
+('n02133161', 'American\_black\_bear', 0.63716227)
+('n02105056', 'groenendael', 0.031817853)
+('n02104365', 'schipperke', 0.029944101)
+('n01883070', 'wombat', 0.028509347)
+('n01877812', 'wallaby', 0.02509332)
+
+Testing Horizontal Shifts {\ldots}
+
+gamma = -1
+('n02133161', 'American\_black\_bear', 0.6483244)
+('n02105056', 'groenendael', 0.046161067)
+('n01877812', 'wallaby', 0.03359524)
+('n02104365', 'schipperke', 0.02045568)
+('n02119789', 'kit\_fox', 0.013900837)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number3.379709e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 104, 223, 278]
+gamma = -2
+('n02133161', 'American\_black\_bear', 0.43699744)
+('n02105056', 'groenendael', 0.07791194)
+('n02119789', 'kit\_fox', 0.050426714)
+('n01877812', 'wallaby', 0.03569907)
+('n02104365', 'schipperke', 0.03517854)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:154: UserWarning: Singular matrix in solving dual problem. Using least-squares solution instead.
+  warnings.warn("Singular matrix in solving dual problem. Using "
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 278, 104, 223]
+gamma = -3
+('n02133161', 'American\_black\_bear', 0.25571555)
+('n02105056', 'groenendael', 0.05779469)
+('n01877812', 'wallaby', 0.04533092)
+('n02119789', 'kit\_fox', 0.037156925)
+('n02127052', 'lynx', 0.030683435)
+
+
+[295, 224, 104, 278, 287]
+gamma = -4
+('n02133161', 'American\_black\_bear', 0.4147852)
+('n02105056', 'groenendael', 0.07874059)
+('n02104365', 'schipperke', 0.04799601)
+('n01877812', 'wallaby', 0.03925634)
+('n02119789', 'kit\_fox', 0.036054403)
+
+
+[295, 224, 223, 104, 278]
+gamma = -5
+('n02133161', 'American\_black\_bear', 0.49269676)
+('n02105056', 'groenendael', 0.047822237)
+('n02119789', 'kit\_fox', 0.040019765)
+('n02104365', 'schipperke', 0.02969921)
+('n01877812', 'wallaby', 0.027276771)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number1.188726e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 278, 223, 104]
+gamma = -6
+('n02133161', 'American\_black\_bear', 0.21886712)
+('n02105056', 'groenendael', 0.11583063)
+('n02104365', 'schipperke', 0.08763782)
+('n02119789', 'kit\_fox', 0.07386892)
+('n01877812', 'wallaby', 0.049603324)
+
+
+[295, 224, 223, 278, 104]
+gamma = -7
+('n02133161', 'American\_black\_bear', 0.20490974)
+('n02105056', 'groenendael', 0.051093675)
+('n01877812', 'wallaby', 0.046491824)
+('n02127052', 'lynx', 0.034598857)
+('n02119789', 'kit\_fox', 0.026809713)
+
+
+[295, 224, 104, 287, 278]
+gamma = -8
+('n02133161', 'American\_black\_bear', 0.39332527)
+('n02105056', 'groenendael', 0.06684585)
+('n02104365', 'schipperke', 0.031720705)
+('n02119789', 'kit\_fox', 0.030653622)
+('n01877812', 'wallaby', 0.030093959)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number7.058348e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 278, 104]
+gamma = -9
+('n02133161', 'American\_black\_bear', 0.37569988)
+('n02105056', 'groenendael', 0.04046437)
+('n01877812', 'wallaby', 0.03135223)
+('n02127052', 'lynx', 0.024733333)
+('n02104365', 'schipperke', 0.021617476)
+
+
+[295, 224, 104, 287, 223]
+gamma = -10
+('n02133161', 'American\_black\_bear', 0.41245878)
+('n02105056', 'groenendael', 0.081230104)
+('n01877812', 'wallaby', 0.036056522)
+('n02104365', 'schipperke', 0.035629842)
+('n02119789', 'kit\_fox', 0.027238745)
+
+
+[295, 224, 104, 223, 278]
+gamma = -11
+('n02133161', 'American\_black\_bear', 0.19953111)
+('n02105056', 'groenendael', 0.06097927)
+('n01877812', 'wallaby', 0.034991138)
+('n02127052', 'lynx', 0.024008602)
+('n02104365', 'schipperke', 0.02190192)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number1.695863e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 104, 287, 223]
+gamma = -12
+('n02133161', 'American\_black\_bear', 0.32674706)
+('n02105056', 'groenendael', 0.12716423)
+('n02104365', 'schipperke', 0.059775427)
+('n02112137', 'chow', 0.03606902)
+('n01877812', 'wallaby', 0.022708248)
+
+
+[295, 224, 223, 260, 104]
+gamma = -13
+('n02133161', 'American\_black\_bear', 0.44809783)
+('n02105056', 'groenendael', 0.06598815)
+('n01877812', 'wallaby', 0.034652114)
+('n02104365', 'schipperke', 0.031049054)
+('n02119789', 'kit\_fox', 0.017036501)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number1.929967e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 104, 223, 278]
+gamma = -14
+('n02133161', 'American\_black\_bear', 0.2630623)
+('n02105056', 'groenendael', 0.17593755)
+('n02104365', 'schipperke', 0.110659964)
+('n01877812', 'wallaby', 0.05175283)
+('n02119789', 'kit\_fox', 0.044718876)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number4.530059e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 104, 278]
+gamma = -15
+('n02133161', 'American\_black\_bear', 0.24925771)
+('n02105056', 'groenendael', 0.10202883)
+('n02104365', 'schipperke', 0.05105866)
+('n01877812', 'wallaby', 0.044184215)
+('n02112137', 'chow', 0.04111707)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number3.521719e-18
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 104, 260]
+gamma = -16
+('n02133161', 'American\_black\_bear', 0.37663126)
+('n02105056', 'groenendael', 0.08986834)
+('n02119789', 'kit\_fox', 0.059052967)
+('n02104365', 'schipperke', 0.053970885)
+('n02112137', 'chow', 0.04547613)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number3.710891e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 278, 223, 260]
+gamma = -17
+('n02133161', 'American\_black\_bear', 0.6895582)
+('n01883070', 'wombat', 0.037174672)
+('n02105056', 'groenendael', 0.021899749)
+('n01877812', 'wallaby', 0.019918177)
+('n02119789', 'kit\_fox', 0.01767784)
+
+
+[295, 106, 224, 104, 278]
+gamma = -18
+('n02133161', 'American\_black\_bear', 0.41738006)
+('n01883070', 'wombat', 0.06779081)
+('n01877812', 'wallaby', 0.04061225)
+('n02119789', 'kit\_fox', 0.035385594)
+('n02442845', 'mink', 0.03472493)
+
+
+[295, 106, 104, 278, 357]
+gamma = -19
+('n02133161', 'American\_black\_bear', 0.30952054)
+('n02127052', 'lynx', 0.066717334)
+('n01883070', 'wombat', 0.05772175)
+('n01877812', 'wallaby', 0.04914267)
+('n02442845', 'mink', 0.037316453)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number7.235855e-18
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 287, 106, 104, 357]
+gamma = -20
+('n02133161', 'American\_black\_bear', 0.45523864)
+('n02104365', 'schipperke', 0.05707478)
+('n02127052', 'lynx', 0.053888973)
+('n02105056', 'groenendael', 0.045970388)
+('n01883070', 'wombat', 0.026088407)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number1.796294e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 223, 287, 224, 106]
+gamma = -21
+('n02133161', 'American\_black\_bear', 0.66174006)
+('n02104365', 'schipperke', 0.04518771)
+('n01883070', 'wombat', 0.035297375)
+('n02105056', 'groenendael', 0.030002752)
+('n02127052', 'lynx', 0.019468883)
+
+
+[295, 223, 106, 224, 287]
+gamma = -22
+('n02133161', 'American\_black\_bear', 0.323649)
+('n02104365', 'schipperke', 0.21638346)
+('n02105056', 'groenendael', 0.0968011)
+('n01883070', 'wombat', 0.043570943)
+('n01877812', 'wallaby', 0.025173988)
+
+
+[295, 223, 224, 106, 104]
+gamma = -23
+('n02133161', 'American\_black\_bear', 0.366799)
+('n02104365', 'schipperke', 0.10833478)
+('n01883070', 'wombat', 0.051853243)
+('n02105056', 'groenendael', 0.04608177)
+('n01877812', 'wallaby', 0.041485637)
+
+
+[295, 223, 106, 224, 104]
+gamma = -24
+('n02133161', 'American\_black\_bear', 0.38863078)
+('n02104365', 'schipperke', 0.12834366)
+('n02105056', 'groenendael', 0.055809896)
+('n01883070', 'wombat', 0.047348373)
+('n01877812', 'wallaby', 0.032778714)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number1.099247e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 223, 224, 106, 104]
+gamma = -25
+('n02133161', 'American\_black\_bear', 0.48806253)
+('n02104365', 'schipperke', 0.10400517)
+('n01877812', 'wallaby', 0.040191904)
+('n02105056', 'groenendael', 0.039293353)
+('n02119789', 'kit\_fox', 0.016199052)
+
+
+[295, 223, 104, 224, 278]
+gamma = -26
+('n02133161', 'American\_black\_bear', 0.48590344)
+('n02104365', 'schipperke', 0.16389064)
+('n02105056', 'groenendael', 0.0650822)
+('n01883070', 'wombat', 0.037548706)
+('n01877812', 'wallaby', 0.028983023)
+
+
+[295, 223, 224, 106, 104]
+gamma = -27
+('n02133161', 'American\_black\_bear', 0.65650004)
+('n01883070', 'wombat', 0.045900438)
+('n02104365', 'schipperke', 0.03594326)
+('n02105056', 'groenendael', 0.021745186)
+('n02127052', 'lynx', 0.016548878)
+
+
+[295, 106, 223, 224, 287]
+gamma = -28
+('n02133161', 'American\_black\_bear', 0.88551205)
+('n02104365', 'schipperke', 0.017006962)
+('n01883070', 'wombat', 0.016958602)
+('n02105056', 'groenendael', 0.016954672)
+('n02132136', 'brown\_bear', 0.004452025)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number4.264455e-18
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 223, 106, 224, 294]
+gamma = -29
+('n02133161', 'American\_black\_bear', 0.9250305)
+('n01883070', 'wombat', 0.010887581)
+('n02104365', 'schipperke', 0.009925245)
+('n02105056', 'groenendael', 0.0060574017)
+('n02132136', 'brown\_bear', 0.0041433903)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number2.680975e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 106, 223, 224, 294]
+gamma = -30
+('n02133161', 'American\_black\_bear', 0.85690033)
+('n01883070', 'wombat', 0.045558073)
+('n02104365', 'schipperke', 0.013843551)
+('n02105056', 'groenendael', 0.012728533)
+('n02132136', 'brown\_bear', 0.0056052725)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number3.572985e-18
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 106, 223, 224, 294]
+gamma = -31
+('n02133161', 'American\_black\_bear', 0.8120862)
+('n01883070', 'wombat', 0.044354413)
+('n02104365', 'schipperke', 0.015526106)
+('n01877812', 'wallaby', 0.0073929513)
+('n02105056', 'groenendael', 0.0068753683)
+
+
+[295, 106, 223, 104, 224]
+gamma = -32
+('n02133161', 'American\_black\_bear', 0.819887)
+('n01883070', 'wombat', 0.043817613)
+('n02104365', 'schipperke', 0.019032188)
+('n02105056', 'groenendael', 0.012890633)
+('n01877812', 'wallaby', 0.009384187)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number1.273909e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 106, 223, 224, 104]
+gamma = -33
+('n02133161', 'American\_black\_bear', 0.77566236)
+('n02104365', 'schipperke', 0.055595644)
+('n02105056', 'groenendael', 0.04094298)
+('n01877812', 'wallaby', 0.006967649)
+('n02110063', 'malamute', 0.006034496)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number3.058678e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 223, 224, 104, 249]
+gamma = -34
+('n02133161', 'American\_black\_bear', 0.7356069)
+('n02105056', 'groenendael', 0.07044733)
+('n02104365', 'schipperke', 0.05664529)
+('n02112137', 'chow', 0.010694747)
+('n01883070', 'wombat', 0.0102633145)
+
+
+[295, 224, 223, 260, 106]
+gamma = -35
+('n02133161', 'American\_black\_bear', 0.7076956)
+('n02105056', 'groenendael', 0.04194045)
+('n02104365', 'schipperke', 0.033970617)
+('n02112137', 'chow', 0.011294376)
+('n01877812', 'wallaby', 0.01085024)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number1.023742e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 260, 104]
+gamma = -36
+('n02133161', 'American\_black\_bear', 0.87904763)
+('n02105056', 'groenendael', 0.027779924)
+('n02104365', 'schipperke', 0.026875595)
+('n02112137', 'chow', 0.0044333315)
+('n01883070', 'wombat', 0.0038113084)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number4.259529e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 260, 106]
+gamma = -37
+('n02133161', 'American\_black\_bear', 0.9336306)
+('n02104365', 'schipperke', 0.0149858445)
+('n02105056', 'groenendael', 0.012131811)
+('n02132136', 'brown\_bear', 0.003127961)
+('n01883070', 'wombat', 0.0027185204)
+
+
+[295, 223, 224, 294, 106]
+gamma = -38
+('n02133161', 'American\_black\_bear', 0.8576432)
+('n02104365', 'schipperke', 0.052146763)
+('n02105056', 'groenendael', 0.034696326)
+('n01883070', 'wombat', 0.0036027774)
+('n01877812', 'wallaby', 0.0029844325)
+
+
+[295, 223, 224, 106, 104]
+gamma = -39
+('n02133161', 'American\_black\_bear', 0.8723262)
+('n02104365', 'schipperke', 0.022531351)
+('n02105056', 'groenendael', 0.014377428)
+('n01883070', 'wombat', 0.008692112)
+('n02132136', 'brown\_bear', 0.005552415)
+
+
+[295, 223, 224, 106, 294]
+gamma = -40
+('n02133161', 'American\_black\_bear', 0.9353557)
+('n02104365', 'schipperke', 0.013509407)
+('n02105056', 'groenendael', 0.009541477)
+('n01883070', 'wombat', 0.0047654435)
+('n02132136', 'brown\_bear', 0.0031440444)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number3.442595e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 223, 224, 106, 294]
+gamma = -41
+('n02133161', 'American\_black\_bear', 0.92363274)
+('n02104365', 'schipperke', 0.012041472)
+('n02105056', 'groenendael', 0.007575539)
+('n01883070', 'wombat', 0.005823728)
+('n02132136', 'brown\_bear', 0.0033581548)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number1.125355e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 223, 224, 106, 294]
+gamma = -42
+('n02133161', 'American\_black\_bear', 0.9347395)
+('n02104365', 'schipperke', 0.013365328)
+('n02105056', 'groenendael', 0.0063220826)
+('n01877812', 'wallaby', 0.0019462431)
+('n02132136', 'brown\_bear', 0.0017949186)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number3.390588e-18
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 223, 224, 104, 294]
+gamma = -43
+('n02133161', 'American\_black\_bear', 0.9555763)
+('n02104365', 'schipperke', 0.004880962)
+('n01877812', 'wallaby', 0.002829933)
+('n02132136', 'brown\_bear', 0.0027434658)
+('n02105056', 'groenendael', 0.00269075)
+
+
+[295, 223, 104, 294, 224]
+gamma = -44
+('n02133161', 'American\_black\_bear', 0.96456945)
+('n02104365', 'schipperke', 0.0067002103)
+('n02105056', 'groenendael', 0.0034556051)
+('n02132136', 'brown\_bear', 0.0014276893)
+('n01877812', 'wallaby', 0.0012176567)
+
+
+[295, 223, 224, 294, 104]
+gamma = -45
+('n02133161', 'American\_black\_bear', 0.94933295)
+('n02104365', 'schipperke', 0.006442692)
+('n02105056', 'groenendael', 0.004369318)
+('n01877812', 'wallaby', 0.0026296887)
+('n02132136', 'brown\_bear', 0.0019914506)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number4.727077e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 223, 224, 104, 294]
+gamma = -46
+('n02133161', 'American\_black\_bear', 0.94359165)
+('n02104365', 'schipperke', 0.012814726)
+('n02105056', 'groenendael', 0.0049823136)
+('n02132136', 'brown\_bear', 0.0027273432)
+('n01877812', 'wallaby', 0.0021423318)
+
+
+[295, 223, 224, 294, 104]
+gamma = -47
+('n02133161', 'American\_black\_bear', 0.9687697)
+('n02104365', 'schipperke', 0.0062627434)
+('n02132136', 'brown\_bear', 0.002551363)
+('n02105056', 'groenendael', 0.0017581577)
+('n02134418', 'sloth\_bear', 0.0014984864)
+
+
+[295, 223, 294, 224, 297]
+gamma = -48
+('n02133161', 'American\_black\_bear', 0.959064)
+('n02104365', 'schipperke', 0.010426667)
+('n02105056', 'groenendael', 0.0032299398)
+('n02132136', 'brown\_bear', 0.002167067)
+('n02134418', 'sloth\_bear', 0.0012136197)
+
+
+[295, 223, 224, 294, 297]
+gamma = -49
+('n02133161', 'American\_black\_bear', 0.99043405)
+('n02132136', 'brown\_bear', 0.0024246066)
+('n02134418', 'sloth\_bear', 0.00094140944)
+('n01883070', 'wombat', 0.0009357511)
+('n02410509', 'bison', 0.0006711473)
+
+
+[295, 294, 297, 106, 347]
+gamma = -50
+('n02133161', 'American\_black\_bear', 0.9822322)
+('n02132136', 'brown\_bear', 0.003448515)
+('n02134418', 'sloth\_bear', 0.002163963)
+('n02410509', 'bison', 0.001999201)
+('n02104365', 'schipperke', 0.0018891904)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number2.153539e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 294, 297, 347, 223]
+gamma = -51
+('n02133161', 'American\_black\_bear', 0.9837392)
+('n02132136', 'brown\_bear', 0.0038124851)
+('n02410509', 'bison', 0.0022896428)
+('n02104365', 'schipperke', 0.0011869702)
+('n02134418', 'sloth\_bear', 0.0010341881)
+
+
+[295, 294, 347, 223, 297]
+gamma = -52
+('n02133161', 'American\_black\_bear', 0.9887961)
+('n02132136', 'brown\_bear', 0.0015773348)
+('n02134418', 'sloth\_bear', 0.0012180082)
+('n01883070', 'wombat', 0.0008960706)
+('n02104365', 'schipperke', 0.0007563805)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number3.027307e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 294, 297, 106, 223]
+gamma = -53
+('n02133161', 'American\_black\_bear', 0.97482103)
+('n01883070', 'wombat', 0.0039665382)
+('n02132136', 'brown\_bear', 0.0038296147)
+('n02134418', 'sloth\_bear', 0.0025246018)
+('n02410509', 'bison', 0.0020934355)
+
+
+[295, 106, 294, 297, 347]
+gamma = -54
+('n02133161', 'American\_black\_bear', 0.9361109)
+('n01883070', 'wombat', 0.033897534)
+('n02132136', 'brown\_bear', 0.005439307)
+('n02410509', 'bison', 0.0027078097)
+('n02134418', 'sloth\_bear', 0.0018344932)
+
+
+[295, 106, 294, 347, 297]
+gamma = -55
+('n02133161', 'American\_black\_bear', 0.9649563)
+('n01883070', 'wombat', 0.01801447)
+('n02132136', 'brown\_bear', 0.0056897653)
+('n02134418', 'sloth\_bear', 0.0015284243)
+('n02410509', 'bison', 0.0010482019)
+
+
+[295, 106, 294, 297, 347]
+gamma = -56
+('n02133161', 'American\_black\_bear', 0.96692574)
+('n01883070', 'wombat', 0.0056826584)
+('n02132136', 'brown\_bear', 0.004273842)
+('n02410509', 'bison', 0.0030398942)
+('n02104365', 'schipperke', 0.002821336)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number2.447836e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 106, 294, 347, 223]
+gamma = -57
+('n02133161', 'American\_black\_bear', 0.9273605)
+('n01883070', 'wombat', 0.0134715615)
+('n02410509', 'bison', 0.013450662)
+('n02132136', 'brown\_bear', 0.009607068)
+('n02403003', 'ox', 0.005318625)
+
+
+[295, 106, 347, 294, 345]
+gamma = -58
+('n02133161', 'American\_black\_bear', 0.92993355)
+('n02410509', 'bison', 0.01255827)
+('n02104365', 'schipperke', 0.00733438)
+('n02134418', 'sloth\_bear', 0.0069336323)
+('n01883070', 'wombat', 0.005885999)
+
+
+[295, 347, 223, 297, 106]
+gamma = -59
+('n02133161', 'American\_black\_bear', 0.9609131)
+('n02410509', 'bison', 0.0062608058)
+('n02132136', 'brown\_bear', 0.0059157778)
+('n02134418', 'sloth\_bear', 0.0044040903)
+('n02104365', 'schipperke', 0.0032502867)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number2.961854e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 347, 294, 297, 223]
+gamma = -60
+('n02133161', 'American\_black\_bear', 0.9731424)
+('n02134418', 'sloth\_bear', 0.003537975)
+('n01883070', 'wombat', 0.003296603)
+('n02104365', 'schipperke', 0.003173885)
+('n02410509', 'bison', 0.0027259844)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number1.473143e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 297, 106, 223, 347]
+gamma = -61
+('n02133161', 'American\_black\_bear', 0.95853996)
+('n02132136', 'brown\_bear', 0.007324094)
+('n02134418', 'sloth\_bear', 0.0069129947)
+('n02410509', 'bison', 0.006174965)
+('n02403003', 'ox', 0.0033291208)
+
+
+[295, 294, 297, 347, 345]
+gamma = -62
+('n02133161', 'American\_black\_bear', 0.947174)
+('n02134418', 'sloth\_bear', 0.009103012)
+('n02132136', 'brown\_bear', 0.007845784)
+('n02410509', 'bison', 0.0070675444)
+('n02104365', 'schipperke', 0.004720262)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number4.146370e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 297, 294, 347, 223]
+gamma = -63
+('n02133161', 'American\_black\_bear', 0.9333101)
+('n02410509', 'bison', 0.016347134)
+('n02132136', 'brown\_bear', 0.008491326)
+('n02104365', 'schipperke', 0.008068829)
+('n02492660', 'howler\_monkey', 0.00453074)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number9.078094e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 347, 294, 223, 379]
+gamma = -64
+('n02133161', 'American\_black\_bear', 0.92519736)
+('n02104365', 'schipperke', 0.018585982)
+('n02410509', 'bison', 0.009670405)
+('n01883070', 'wombat', 0.007940696)
+('n02105056', 'groenendael', 0.006245591)
+
+
+[295, 223, 347, 106, 224]
+gamma = -65
+('n02133161', 'American\_black\_bear', 0.67610896)
+('n02410509', 'bison', 0.18931487)
+('n02104365', 'schipperke', 0.050119266)
+('n02105056', 'groenendael', 0.018927336)
+('n02403003', 'ox', 0.013588365)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number1.821752e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 347, 223, 224, 345]
+gamma = -66
+('n02133161', 'American\_black\_bear', 0.5016147)
+('n02104365', 'schipperke', 0.3270026)
+('n02105056', 'groenendael', 0.1143749)
+('n02410509', 'bison', 0.018432345)
+('n02112137', 'chow', 0.011784507)
+
+
+[295, 223, 224, 347, 260]
+gamma = -67
+('n02133161', 'American\_black\_bear', 0.52516234)
+('n02104365', 'schipperke', 0.24402621)
+('n02105056', 'groenendael', 0.10233448)
+('n02410509', 'bison', 0.04517847)
+('n02111277', 'Newfoundland', 0.0252336)
+
+
+[295, 223, 224, 347, 256]
+gamma = -68
+('n02105056', 'groenendael', 0.36271787)
+('n02133161', 'American\_black\_bear', 0.26559818)
+('n02104365', 'schipperke', 0.26368386)
+('n02111277', 'Newfoundland', 0.043858968)
+('n02112137', 'chow', 0.033204503)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number1.897083e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[224, 295, 223, 256, 260]
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_29_65.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}36}]:} \PY{n}{temp}\PY{p}{,} \PY{n}{mask} \PY{o}{=} \PY{n}{explanation}\PY{o}{.}\PY{n}{get\PYZus{}image\PYZus{}and\PYZus{}mask}\PY{p}{(}\PY{l+m+mi}{295}\PY{p}{,} \PY{n}{positive\PYZus{}only}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{num\PYZus{}features}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{hide\PYZus{}rest}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{mark\PYZus{}boundaries}\PY{p}{(}\PY{n}{temp} \PY{o}{/} \PY{l+m+mi}{2} \PY{o}{+} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{n}{mask}\PY{p}{)}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Contributing features in original:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Contributing features in original:
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_30_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}37}]:} \PY{c+c1}{\PYZsh{} Original prediction}
+         \PY{n}{alter\PYZus{}image} \PY{o}{=} \PY{n}{transform\PYZus{}img\PYZus{}fn}\PY{p}{(}\PY{p}{[}\PY{n}{os}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cat\PYZus{}mouse.jpg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{]}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+         \PY{n}{preds} \PY{o}{=} \PY{n}{inet\PYZus{}model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{alter\PYZus{}image}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Original Prediction:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+         \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{decode\PYZus{}predictions}\PY{p}{(}\PY{n}{preds}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{p}{)}
+         
+         \PY{n}{cols}\PY{p}{,} \PY{n}{rows} \PY{o}{=} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{97}
+         \PY{n}{fig}\PY{p}{,} \PY{n}{axeslist} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{ncols}\PY{o}{=}\PY{n}{cols}\PY{p}{,} \PY{n}{nrows}\PY{o}{=}\PY{n}{rows}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{5} \PY{o}{*} \PY{n}{cols}\PY{p}{,} \PY{l+m+mi}{5} \PY{o}{*} \PY{n}{rows}\PY{p}{)}\PY{p}{)}
+         \PY{n}{i} \PY{o}{=} \PY{l+m+mi}{0}
+         
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Testing Horizontal Shifts ...}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+         \PY{c+c1}{\PYZsh{} With positive gammas}
+         \PY{n}{gamma} \PY{o}{=} \PY{l+m+mi}{1}
+         \PY{n}{result} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{American\PYZus{}black\PYZus{}bear}\PY{l+s+s2}{\PYZdq{}}
+         \PY{k}{while} \PY{n}{result} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{American\PYZus{}black\PYZus{}bear}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{gamma = }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{gamma}\PY{p}{)}\PY{p}{)}
+             \PY{n}{alter\PYZus{}image} \PY{o}{=} \PY{n}{transform\PYZus{}img\PYZus{}fn}\PY{p}{(}\PY{p}{[}\PY{n}{os}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cat\PYZus{}mouse.jpg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{]}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+             \PY{n}{alter\PYZus{}image}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{gamma}\PY{p}{:}\PY{p}{]} \PY{o}{=} \PY{n}{alter\PYZus{}image}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{p}{:}\PY{o}{\PYZhy{}}\PY{n}{gamma}\PY{p}{]}
+             \PY{n}{alter\PYZus{}image} \PY{o}{=} \PY{n}{alter\PYZus{}image}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{gamma}\PY{p}{:}\PY{p}{]}
+             \PY{n}{preds} \PY{o}{=} \PY{n}{inet\PYZus{}model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{alter\PYZus{}image}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+             \PY{n}{tup} \PY{o}{=} \PY{n}{decode\PYZus{}predictions}\PY{p}{(}\PY{n}{preds}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+             \PY{n}{result} \PY{o}{=} \PY{n}{tup}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}
+             \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{decode\PYZus{}predictions}\PY{p}{(}\PY{n}{preds}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{:}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+             \PY{n+nb}{print}\PY{p}{(}\PY{p}{)}
+             
+             \PY{n}{alt} \PY{o}{=} \PY{n}{alter\PYZus{}image}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+             \PY{n}{alt}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{where}\PY{p}{(}\PY{n}{alt} \PY{o}{\PYZgt{}} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{1}
+             \PY{n}{alt}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{where}\PY{p}{(}\PY{n}{alt} \PY{o}{\PYZlt{}} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{]} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+         
+             \PY{n}{axeslist}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{alt} \PY{o}{/} \PY{l+m+mi}{2} \PY{o}{+} \PY{o}{.}\PY{l+m+mi}{5}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{gray}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+             \PY{n}{axeslist}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{gamma: }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n+nb}{round}\PY{p}{(}\PY{n}{gamma}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+             \PY{n}{axeslist}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}axis\PYZus{}off}\PY{p}{(}\PY{p}{)}
+             \PY{n}{i} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+             
+             \PY{n}{ex\PYZus{}7} \PY{o}{=} \PY{n}{lime\PYZus{}image}\PY{o}{.}\PY{n}{LimeImageExplainer}\PY{p}{(}\PY{p}{)}
+             \PY{n}{expl\PYZus{}7} \PY{o}{=} \PY{n}{ex\PYZus{}7}\PY{o}{.}\PY{n}{explain\PYZus{}instance}\PY{p}{(}\PY{n}{alt}\PY{p}{,} \PY{n}{inet\PYZus{}model}\PY{o}{.}\PY{n}{predict}\PY{p}{,} \PY{n}{top\PYZus{}labels}\PY{o}{=}\PY{l+m+mi}{5}\PY{p}{,} \PY{n}{hide\PYZus{}color}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{num\PYZus{}samples}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{expl\PYZus{}7}\PY{o}{.}\PY{n}{top\PYZus{}labels}\PY{p}{)}\PY{p}{)}
+             \PY{n}{temp}\PY{p}{,} \PY{n}{mask} \PY{o}{=} \PY{n}{expl\PYZus{}7}\PY{o}{.}\PY{n}{get\PYZus{}image\PYZus{}and\PYZus{}mask}\PY{p}{(}\PY{n}{expl\PYZus{}7}\PY{o}{.}\PY{n}{top\PYZus{}labels}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{positive\PYZus{}only}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{num\PYZus{}features}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{hide\PYZus{}rest}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+             
+             \PY{n}{alt\PYZus{}marked} \PY{o}{=} \PY{n}{mark\PYZus{}boundaries}\PY{p}{(}\PY{n}{temp} \PY{o}{/} \PY{l+m+mi}{2} \PY{o}{+} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{n}{mask}\PY{p}{)}
+             \PY{n}{axeslist}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{alt\PYZus{}marked}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{gray}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+             \PY{n}{axeslist}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{gamma: }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n+nb}{round}\PY{p}{(}\PY{n}{gamma}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+             \PY{n}{axeslist}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}axis\PYZus{}off}\PY{p}{(}\PY{p}{)}
+             \PY{n}{i} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+             
+             \PY{n}{gamma} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+         
+         \PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Original Prediction:
+('n02133161', 'American\_black\_bear', 0.63716227)
+('n02105056', 'groenendael', 0.031817853)
+('n02104365', 'schipperke', 0.029944101)
+('n01883070', 'wombat', 0.028509347)
+('n01877812', 'wallaby', 0.02509332)
+
+Testing Horizontal Shifts {\ldots}
+
+gamma = 1
+('n02133161', 'American\_black\_bear', 0.5307827)
+('n02105056', 'groenendael', 0.102131285)
+('n01877812', 'wallaby', 0.044460457)
+('n02104365', 'schipperke', 0.042117964)
+('n02119789', 'kit\_fox', 0.01539931)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number3.415214e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 104, 223, 278]
+gamma = 2
+('n02133161', 'American\_black\_bear', 0.5307827)
+('n02105056', 'groenendael', 0.102131285)
+('n01877812', 'wallaby', 0.044460457)
+('n02104365', 'schipperke', 0.042117964)
+('n02119789', 'kit\_fox', 0.01539931)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:154: UserWarning: Singular matrix in solving dual problem. Using least-squares solution instead.
+  warnings.warn("Singular matrix in solving dual problem. Using "
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 104, 223, 278]
+gamma = 3
+('n02133161', 'American\_black\_bear', 0.5307827)
+('n02105056', 'groenendael', 0.10213137)
+('n01877812', 'wallaby', 0.04446058)
+('n02104365', 'schipperke', 0.042117905)
+('n02119789', 'kit\_fox', 0.015399361)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number5.882171e-18
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 104, 223, 278]
+gamma = 4
+('n02133161', 'American\_black\_bear', 0.5307827)
+('n02105056', 'groenendael', 0.10213137)
+('n01877812', 'wallaby', 0.04446058)
+('n02104365', 'schipperke', 0.042117905)
+('n02119789', 'kit\_fox', 0.015399361)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number1.351212e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 104, 223, 278]
+gamma = 5
+('n02133161', 'American\_black\_bear', 0.5307827)
+('n02105056', 'groenendael', 0.10213137)
+('n01877812', 'wallaby', 0.04446058)
+('n02104365', 'schipperke', 0.042117905)
+('n02119789', 'kit\_fox', 0.015399361)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number8.857195e-18
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 104, 223, 278]
+gamma = 6
+('n02133161', 'American\_black\_bear', 0.5307827)
+('n02105056', 'groenendael', 0.10213137)
+('n01877812', 'wallaby', 0.04446058)
+('n02104365', 'schipperke', 0.042117905)
+('n02119789', 'kit\_fox', 0.015399361)
+
+
+[295, 224, 104, 223, 278]
+gamma = 7
+('n02133161', 'American\_black\_bear', 0.54550385)
+('n02105056', 'groenendael', 0.10090725)
+('n01877812', 'wallaby', 0.045010764)
+('n02104365', 'schipperke', 0.040875737)
+('n02119789', 'kit\_fox', 0.014804756)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number4.580522e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 104, 223, 278]
+gamma = 8
+('n02133161', 'American\_black\_bear', 0.54550385)
+('n02105056', 'groenendael', 0.10090725)
+('n01877812', 'wallaby', 0.045010764)
+('n02104365', 'schipperke', 0.040875737)
+('n02119789', 'kit\_fox', 0.014804756)
+
+
+[295, 224, 104, 223, 278]
+gamma = 9
+('n02133161', 'American\_black\_bear', 0.480561)
+('n02105056', 'groenendael', 0.09347408)
+('n01877812', 'wallaby', 0.05137624)
+('n02104365', 'schipperke', 0.042797413)
+('n02119789', 'kit\_fox', 0.018480398)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number1.214502e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 104, 223, 278]
+gamma = 10
+('n02133161', 'American\_black\_bear', 0.480561)
+('n02105056', 'groenendael', 0.09347408)
+('n01877812', 'wallaby', 0.05137624)
+('n02104365', 'schipperke', 0.042797413)
+('n02119789', 'kit\_fox', 0.018480398)
+
+
+[295, 224, 104, 223, 278]
+gamma = 11
+('n02133161', 'American\_black\_bear', 0.480561)
+('n02105056', 'groenendael', 0.09347408)
+('n01877812', 'wallaby', 0.05137624)
+('n02104365', 'schipperke', 0.042797413)
+('n02119789', 'kit\_fox', 0.018480398)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number9.052660e-18
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 104, 223, 278]
+gamma = 12
+('n02133161', 'American\_black\_bear', 0.480561)
+('n02105056', 'groenendael', 0.09347408)
+('n01877812', 'wallaby', 0.05137624)
+('n02104365', 'schipperke', 0.042797413)
+('n02119789', 'kit\_fox', 0.018480398)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number5.322880e-18
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 104, 223, 278]
+gamma = 13
+('n02133161', 'American\_black\_bear', 0.480561)
+('n02105056', 'groenendael', 0.09347408)
+('n01877812', 'wallaby', 0.05137624)
+('n02104365', 'schipperke', 0.042797413)
+('n02119789', 'kit\_fox', 0.018480398)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number1.860896e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 104, 223, 278]
+gamma = 14
+('n02133161', 'American\_black\_bear', 0.480561)
+('n02105056', 'groenendael', 0.09347408)
+('n01877812', 'wallaby', 0.05137624)
+('n02104365', 'schipperke', 0.042797413)
+('n02119789', 'kit\_fox', 0.018480398)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number2.039753e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 104, 223, 278]
+gamma = 15
+('n02133161', 'American\_black\_bear', 0.5663257)
+('n02105056', 'groenendael', 0.07164911)
+('n01877812', 'wallaby', 0.044356283)
+('n02104365', 'schipperke', 0.03448294)
+('n02119789', 'kit\_fox', 0.0156167755)
+
+
+[295, 224, 104, 223, 278]
+gamma = 16
+('n02133161', 'American\_black\_bear', 0.5663257)
+('n02105056', 'groenendael', 0.07164911)
+('n01877812', 'wallaby', 0.044356283)
+('n02104365', 'schipperke', 0.03448294)
+('n02119789', 'kit\_fox', 0.0156167755)
+
+
+[295, 224, 104, 223, 278]
+gamma = 17
+('n02133161', 'American\_black\_bear', 0.7398011)
+('n02105056', 'groenendael', 0.04132917)
+('n02104365', 'schipperke', 0.026492145)
+('n01883070', 'wombat', 0.019345198)
+('n01877812', 'wallaby', 0.017972153)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number2.330479e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 106, 104]
+gamma = 18
+('n02133161', 'American\_black\_bear', 0.7398011)
+('n02105056', 'groenendael', 0.04132917)
+('n02104365', 'schipperke', 0.026492145)
+('n01883070', 'wombat', 0.019345198)
+('n01877812', 'wallaby', 0.017972153)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number1.497887e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 106, 104]
+gamma = 19
+('n02133161', 'American\_black\_bear', 0.7398011)
+('n02105056', 'groenendael', 0.04132917)
+('n02104365', 'schipperke', 0.026492145)
+('n01883070', 'wombat', 0.019345198)
+('n01877812', 'wallaby', 0.017972153)
+
+
+[295, 224, 223, 106, 104]
+gamma = 20
+('n02133161', 'American\_black\_bear', 0.7398011)
+('n02105056', 'groenendael', 0.04132917)
+('n02104365', 'schipperke', 0.026492145)
+('n01883070', 'wombat', 0.019345198)
+('n01877812', 'wallaby', 0.017972153)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number2.964668e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 106, 104]
+gamma = 21
+('n02133161', 'American\_black\_bear', 0.7398011)
+('n02105056', 'groenendael', 0.04132917)
+('n02104365', 'schipperke', 0.026492145)
+('n01883070', 'wombat', 0.019345198)
+('n01877812', 'wallaby', 0.017972153)
+
+
+[295, 224, 223, 106, 104]
+gamma = 22
+('n02133161', 'American\_black\_bear', 0.7398011)
+('n02105056', 'groenendael', 0.04132917)
+('n02104365', 'schipperke', 0.026492145)
+('n01883070', 'wombat', 0.019345198)
+('n01877812', 'wallaby', 0.017972153)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number1.953437e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 106, 104]
+gamma = 23
+('n02133161', 'American\_black\_bear', 0.73530203)
+('n02105056', 'groenendael', 0.04284565)
+('n02104365', 'schipperke', 0.02512567)
+('n01877812', 'wallaby', 0.01933324)
+('n01883070', 'wombat', 0.018883849)
+
+
+[295, 224, 223, 104, 106]
+gamma = 24
+('n02133161', 'American\_black\_bear', 0.73530203)
+('n02105056', 'groenendael', 0.04284565)
+('n02104365', 'schipperke', 0.02512567)
+('n01877812', 'wallaby', 0.01933324)
+('n01883070', 'wombat', 0.018883849)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number1.870691e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 104, 106]
+gamma = 25
+('n02133161', 'American\_black\_bear', 0.6860463)
+('n02105056', 'groenendael', 0.043013398)
+('n02104365', 'schipperke', 0.034830272)
+('n01877812', 'wallaby', 0.021518987)
+('n01883070', 'wombat', 0.01739058)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number1.300027e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 104, 106]
+gamma = 26
+('n02133161', 'American\_black\_bear', 0.6860463)
+('n02105056', 'groenendael', 0.043013398)
+('n02104365', 'schipperke', 0.034830272)
+('n01877812', 'wallaby', 0.021518987)
+('n01883070', 'wombat', 0.01739058)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number2.196023e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 104, 106]
+gamma = 27
+('n02133161', 'American\_black\_bear', 0.6860463)
+('n02105056', 'groenendael', 0.043013398)
+('n02104365', 'schipperke', 0.034830272)
+('n01877812', 'wallaby', 0.021518987)
+('n01883070', 'wombat', 0.01739058)
+
+
+[295, 224, 223, 104, 106]
+gamma = 28
+('n02133161', 'American\_black\_bear', 0.6860463)
+('n02105056', 'groenendael', 0.043013398)
+('n02104365', 'schipperke', 0.034830272)
+('n01877812', 'wallaby', 0.021518987)
+('n01883070', 'wombat', 0.01739058)
+
+
+[295, 224, 223, 104, 106]
+gamma = 29
+('n02133161', 'American\_black\_bear', 0.6860463)
+('n02105056', 'groenendael', 0.043013398)
+('n02104365', 'schipperke', 0.034830272)
+('n01877812', 'wallaby', 0.021518987)
+('n01883070', 'wombat', 0.01739058)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number1.105123e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 104, 106]
+gamma = 30
+('n02133161', 'American\_black\_bear', 0.6860463)
+('n02105056', 'groenendael', 0.043013398)
+('n02104365', 'schipperke', 0.034830272)
+('n01877812', 'wallaby', 0.021518987)
+('n01883070', 'wombat', 0.01739058)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number2.246132e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 104, 106]
+gamma = 31
+('n02133161', 'American\_black\_bear', 0.70028865)
+('n02105056', 'groenendael', 0.047209203)
+('n02104365', 'schipperke', 0.03584457)
+('n01883070', 'wombat', 0.023442272)
+('n01877812', 'wallaby', 0.021503614)
+
+
+[295, 224, 223, 106, 104]
+gamma = 32
+('n02133161', 'American\_black\_bear', 0.70028865)
+('n02105056', 'groenendael', 0.047209203)
+('n02104365', 'schipperke', 0.03584457)
+('n01883070', 'wombat', 0.023442272)
+('n01877812', 'wallaby', 0.021503614)
+
+
+[295, 224, 223, 106, 104]
+gamma = 33
+('n02133161', 'American\_black\_bear', 0.48609453)
+('n02105056', 'groenendael', 0.1403403)
+('n02104365', 'schipperke', 0.05849696)
+('n01877812', 'wallaby', 0.05163252)
+('n02119789', 'kit\_fox', 0.024761682)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number4.167561e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 104, 278]
+gamma = 34
+('n02133161', 'American\_black\_bear', 0.48609453)
+('n02105056', 'groenendael', 0.1403403)
+('n02104365', 'schipperke', 0.05849696)
+('n01877812', 'wallaby', 0.05163252)
+('n02119789', 'kit\_fox', 0.024761682)
+
+
+[295, 224, 223, 104, 278]
+gamma = 35
+('n02133161', 'American\_black\_bear', 0.48609453)
+('n02105056', 'groenendael', 0.1403403)
+('n02104365', 'schipperke', 0.05849696)
+('n01877812', 'wallaby', 0.05163252)
+('n02119789', 'kit\_fox', 0.024761682)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number1.990579e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 104, 278]
+gamma = 36
+('n02133161', 'American\_black\_bear', 0.48609453)
+('n02105056', 'groenendael', 0.1403403)
+('n02104365', 'schipperke', 0.05849696)
+('n01877812', 'wallaby', 0.05163252)
+('n02119789', 'kit\_fox', 0.024761682)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number8.408984e-18
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 104, 278]
+gamma = 37
+('n02133161', 'American\_black\_bear', 0.48609453)
+('n02105056', 'groenendael', 0.1403403)
+('n02104365', 'schipperke', 0.05849696)
+('n01877812', 'wallaby', 0.05163252)
+('n02119789', 'kit\_fox', 0.024761682)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number4.193980e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 104, 278]
+gamma = 38
+('n02133161', 'American\_black\_bear', 0.48609453)
+('n02105056', 'groenendael', 0.1403403)
+('n02104365', 'schipperke', 0.05849696)
+('n01877812', 'wallaby', 0.05163252)
+('n02119789', 'kit\_fox', 0.024761682)
+
+
+[295, 224, 223, 104, 278]
+gamma = 39
+('n02133161', 'American\_black\_bear', 0.5115023)
+('n02105056', 'groenendael', 0.14089775)
+('n02104365', 'schipperke', 0.052882105)
+('n01877812', 'wallaby', 0.04941978)
+('n02112137', 'chow', 0.022871727)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number3.742712e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 104, 260]
+gamma = 40
+('n02133161', 'American\_black\_bear', 0.5115023)
+('n02105056', 'groenendael', 0.14089775)
+('n02104365', 'schipperke', 0.052882105)
+('n01877812', 'wallaby', 0.04941978)
+('n02112137', 'chow', 0.022871727)
+
+
+[295, 224, 223, 104, 260]
+gamma = 41
+('n02133161', 'American\_black\_bear', 0.47437727)
+('n02105056', 'groenendael', 0.11345422)
+('n02104365', 'schipperke', 0.06263249)
+('n01877812', 'wallaby', 0.04563432)
+('n02112137', 'chow', 0.0302656)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number1.225951e-18
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 104, 260]
+gamma = 42
+('n02133161', 'American\_black\_bear', 0.47437727)
+('n02105056', 'groenendael', 0.11345422)
+('n02104365', 'schipperke', 0.06263249)
+('n01877812', 'wallaby', 0.04563432)
+('n02112137', 'chow', 0.0302656)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number9.638607e-18
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 104, 260]
+gamma = 43
+('n02133161', 'American\_black\_bear', 0.47437727)
+('n02105056', 'groenendael', 0.11345422)
+('n02104365', 'schipperke', 0.06263249)
+('n01877812', 'wallaby', 0.04563432)
+('n02112137', 'chow', 0.0302656)
+
+
+[295, 224, 223, 104, 260]
+gamma = 44
+('n02133161', 'American\_black\_bear', 0.47437727)
+('n02105056', 'groenendael', 0.11345422)
+('n02104365', 'schipperke', 0.06263249)
+('n01877812', 'wallaby', 0.04563432)
+('n02112137', 'chow', 0.0302656)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number1.233448e-18
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 104, 260]
+gamma = 45
+('n02133161', 'American\_black\_bear', 0.47437727)
+('n02105056', 'groenendael', 0.11345422)
+('n02104365', 'schipperke', 0.06263249)
+('n01877812', 'wallaby', 0.04563432)
+('n02112137', 'chow', 0.0302656)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number3.196119e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 104, 260]
+gamma = 46
+('n02133161', 'American\_black\_bear', 0.47437727)
+('n02105056', 'groenendael', 0.11345422)
+('n02104365', 'schipperke', 0.06263249)
+('n01877812', 'wallaby', 0.04563432)
+('n02112137', 'chow', 0.0302656)
+
+
+[295, 224, 223, 104, 260]
+gamma = 47
+('n02133161', 'American\_black\_bear', 0.5648118)
+('n02105056', 'groenendael', 0.11341806)
+('n02104365', 'schipperke', 0.044792604)
+('n01877812', 'wallaby', 0.038023982)
+('n02112137', 'chow', 0.022983262)
+
+
+[295, 224, 223, 104, 260]
+gamma = 48
+('n02133161', 'American\_black\_bear', 0.5648118)
+('n02105056', 'groenendael', 0.11341806)
+('n02104365', 'schipperke', 0.044792604)
+('n01877812', 'wallaby', 0.038023982)
+('n02112137', 'chow', 0.022983262)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number9.280953e-18
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 104, 260]
+gamma = 49
+('n02133161', 'American\_black\_bear', 0.8623157)
+('n02105056', 'groenendael', 0.032309756)
+('n02104365', 'schipperke', 0.026962275)
+('n01877812', 'wallaby', 0.009656751)
+('n01883070', 'wombat', 0.008282317)
+
+
+[295, 224, 223, 104, 106]
+gamma = 50
+('n02133161', 'American\_black\_bear', 0.8623157)
+('n02105056', 'groenendael', 0.032309756)
+('n02104365', 'schipperke', 0.026962275)
+('n01877812', 'wallaby', 0.009656751)
+('n01883070', 'wombat', 0.008282317)
+
+
+[295, 224, 223, 104, 106]
+gamma = 51
+('n02133161', 'American\_black\_bear', 0.8623157)
+('n02105056', 'groenendael', 0.032309756)
+('n02104365', 'schipperke', 0.026962275)
+('n01877812', 'wallaby', 0.009656751)
+('n01883070', 'wombat', 0.008282317)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number1.762007e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 104, 106]
+gamma = 52
+('n02133161', 'American\_black\_bear', 0.8623157)
+('n02105056', 'groenendael', 0.032309756)
+('n02104365', 'schipperke', 0.026962275)
+('n01877812', 'wallaby', 0.009656751)
+('n01883070', 'wombat', 0.008282317)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number8.519504e-19
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 104, 106]
+gamma = 53
+('n02133161', 'American\_black\_bear', 0.8623157)
+('n02105056', 'groenendael', 0.032309756)
+('n02104365', 'schipperke', 0.026962275)
+('n01877812', 'wallaby', 0.009656751)
+('n01883070', 'wombat', 0.008282317)
+
+
+[295, 224, 223, 104, 106]
+gamma = 54
+('n02133161', 'American\_black\_bear', 0.8623157)
+('n02105056', 'groenendael', 0.032309756)
+('n02104365', 'schipperke', 0.026962275)
+('n01877812', 'wallaby', 0.009656751)
+('n01883070', 'wombat', 0.008282317)
+
+
+[295, 224, 223, 104, 106]
+gamma = 55
+('n02133161', 'American\_black\_bear', 0.8569)
+('n02105056', 'groenendael', 0.03547339)
+('n02104365', 'schipperke', 0.02556883)
+('n01877812', 'wallaby', 0.010016704)
+('n01883070', 'wombat', 0.009243238)
+
+
+[295, 224, 223, 104, 106]
+gamma = 56
+('n02133161', 'American\_black\_bear', 0.8569)
+('n02105056', 'groenendael', 0.03547339)
+('n02104365', 'schipperke', 0.02556883)
+('n01877812', 'wallaby', 0.010016704)
+('n01883070', 'wombat', 0.009243238)
+
+
+[295, 224, 223, 104, 106]
+gamma = 57
+('n02133161', 'American\_black\_bear', 0.8344071)
+('n02105056', 'groenendael', 0.048407163)
+('n02104365', 'schipperke', 0.033992283)
+('n01877812', 'wallaby', 0.008179642)
+('n01883070', 'wombat', 0.007067865)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number2.598773e-18
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 104, 106]
+gamma = 58
+('n02133161', 'American\_black\_bear', 0.8344071)
+('n02105056', 'groenendael', 0.048407163)
+('n02104365', 'schipperke', 0.033992283)
+('n01877812', 'wallaby', 0.008179642)
+('n01883070', 'wombat', 0.007067865)
+
+
+[295, 224, 223, 104, 106]
+gamma = 59
+('n02133161', 'American\_black\_bear', 0.8344071)
+('n02105056', 'groenendael', 0.048407163)
+('n02104365', 'schipperke', 0.033992283)
+('n01877812', 'wallaby', 0.008179642)
+('n01883070', 'wombat', 0.007067865)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number2.222747e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 104, 106]
+gamma = 60
+('n02133161', 'American\_black\_bear', 0.8344071)
+('n02105056', 'groenendael', 0.048407163)
+('n02104365', 'schipperke', 0.033992283)
+('n01877812', 'wallaby', 0.008179642)
+('n01883070', 'wombat', 0.007067865)
+
+
+[295, 224, 223, 104, 106]
+gamma = 61
+('n02133161', 'American\_black\_bear', 0.8344071)
+('n02105056', 'groenendael', 0.048407163)
+('n02104365', 'schipperke', 0.033992283)
+('n01877812', 'wallaby', 0.008179642)
+('n01883070', 'wombat', 0.007067865)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number1.154941e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 104, 106]
+gamma = 62
+('n02133161', 'American\_black\_bear', 0.8344071)
+('n02105056', 'groenendael', 0.048407163)
+('n02104365', 'schipperke', 0.033992283)
+('n01877812', 'wallaby', 0.008179642)
+('n01883070', 'wombat', 0.007067865)
+
+
+[295, 224, 223, 104, 106]
+gamma = 63
+('n02133161', 'American\_black\_bear', 0.86096233)
+('n02105056', 'groenendael', 0.037935052)
+('n02104365', 'schipperke', 0.031036984)
+('n01883070', 'wombat', 0.012930461)
+('n01877812', 'wallaby', 0.0052569816)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number1.837782e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 106, 104]
+gamma = 64
+('n02133161', 'American\_black\_bear', 0.86096233)
+('n02105056', 'groenendael', 0.037935052)
+('n02104365', 'schipperke', 0.031036984)
+('n01883070', 'wombat', 0.012930461)
+('n01877812', 'wallaby', 0.0052569816)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number4.919785e-18
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 106, 104]
+gamma = 65
+('n02133161', 'American\_black\_bear', 0.340698)
+('n02104365', 'schipperke', 0.12539588)
+('n01877812', 'wallaby', 0.12462257)
+('n02105056', 'groenendael', 0.11615197)
+('n02119789', 'kit\_fox', 0.037292086)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number5.379665e-18
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 223, 104, 224, 278]
+gamma = 66
+('n02133161', 'American\_black\_bear', 0.340698)
+('n02104365', 'schipperke', 0.12539588)
+('n01877812', 'wallaby', 0.12462257)
+('n02105056', 'groenendael', 0.11615197)
+('n02119789', 'kit\_fox', 0.037292086)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number3.037511e-18
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 223, 104, 224, 278]
+gamma = 67
+('n02133161', 'American\_black\_bear', 0.340698)
+('n02104365', 'schipperke', 0.12539588)
+('n01877812', 'wallaby', 0.12462257)
+('n02105056', 'groenendael', 0.11615197)
+('n02119789', 'kit\_fox', 0.037292086)
+
+
+[295, 223, 104, 224, 278]
+gamma = 68
+('n02133161', 'American\_black\_bear', 0.340698)
+('n02104365', 'schipperke', 0.12539588)
+('n01877812', 'wallaby', 0.12462257)
+('n02105056', 'groenendael', 0.11615197)
+('n02119789', 'kit\_fox', 0.037292086)
+
+
+[295, 223, 104, 224, 278]
+gamma = 69
+('n02133161', 'American\_black\_bear', 0.340698)
+('n02104365', 'schipperke', 0.12539588)
+('n01877812', 'wallaby', 0.12462257)
+('n02105056', 'groenendael', 0.11615197)
+('n02119789', 'kit\_fox', 0.037292086)
+
+
+[295, 223, 104, 224, 278]
+gamma = 70
+('n02133161', 'American\_black\_bear', 0.340698)
+('n02104365', 'schipperke', 0.12539588)
+('n01877812', 'wallaby', 0.12462257)
+('n02105056', 'groenendael', 0.11615197)
+('n02119789', 'kit\_fox', 0.037292086)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number5.157543e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 223, 104, 224, 278]
+gamma = 71
+('n02133161', 'American\_black\_bear', 0.3225989)
+('n01877812', 'wallaby', 0.1389337)
+('n02104365', 'schipperke', 0.119849004)
+('n02105056', 'groenendael', 0.11386474)
+('n02119789', 'kit\_fox', 0.03784399)
+
+
+[295, 104, 223, 224, 278]
+gamma = 72
+('n02133161', 'American\_black\_bear', 0.3225989)
+('n01877812', 'wallaby', 0.1389337)
+('n02104365', 'schipperke', 0.119849004)
+('n02105056', 'groenendael', 0.11386474)
+('n02119789', 'kit\_fox', 0.03784399)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number1.165685e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 104, 223, 224, 278]
+gamma = 73
+('n02133161', 'American\_black\_bear', 0.36432245)
+('n02105056', 'groenendael', 0.124282114)
+('n02104365', 'schipperke', 0.10632364)
+('n01877812', 'wallaby', 0.10461377)
+('n02119789', 'kit\_fox', 0.04016824)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number5.674257e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 104, 278]
+gamma = 74
+('n02133161', 'American\_black\_bear', 0.36432245)
+('n02105056', 'groenendael', 0.124282114)
+('n02104365', 'schipperke', 0.10632364)
+('n01877812', 'wallaby', 0.10461377)
+('n02119789', 'kit\_fox', 0.04016824)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number2.186441e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 104, 278]
+gamma = 75
+('n02133161', 'American\_black\_bear', 0.36432245)
+('n02105056', 'groenendael', 0.124282114)
+('n02104365', 'schipperke', 0.10632364)
+('n01877812', 'wallaby', 0.10461377)
+('n02119789', 'kit\_fox', 0.04016824)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number3.227253e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 104, 278]
+gamma = 76
+('n02133161', 'American\_black\_bear', 0.36432245)
+('n02105056', 'groenendael', 0.124282114)
+('n02104365', 'schipperke', 0.10632364)
+('n01877812', 'wallaby', 0.10461377)
+('n02119789', 'kit\_fox', 0.04016824)
+
+
+[295, 224, 223, 104, 278]
+gamma = 77
+('n02133161', 'American\_black\_bear', 0.36432245)
+('n02105056', 'groenendael', 0.124282114)
+('n02104365', 'schipperke', 0.10632364)
+('n01877812', 'wallaby', 0.10461377)
+('n02119789', 'kit\_fox', 0.04016824)
+
+
+[295, 224, 223, 104, 278]
+gamma = 78
+('n02133161', 'American\_black\_bear', 0.36432245)
+('n02105056', 'groenendael', 0.124282114)
+('n02104365', 'schipperke', 0.10632364)
+('n01877812', 'wallaby', 0.10461377)
+('n02119789', 'kit\_fox', 0.04016824)
+
+
+[295, 224, 223, 104, 278]
+gamma = 79
+('n02133161', 'American\_black\_bear', 0.41894057)
+('n01877812', 'wallaby', 0.125469)
+('n02105056', 'groenendael', 0.08790759)
+('n02104365', 'schipperke', 0.08021806)
+('n02119789', 'kit\_fox', 0.031299777)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number3.492389e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 104, 224, 223, 278]
+gamma = 80
+('n02133161', 'American\_black\_bear', 0.41894057)
+('n01877812', 'wallaby', 0.125469)
+('n02105056', 'groenendael', 0.08790759)
+('n02104365', 'schipperke', 0.08021806)
+('n02119789', 'kit\_fox', 0.031299777)
+
+
+[295, 104, 224, 223, 278]
+gamma = 81
+('n02133161', 'American\_black\_bear', 0.7644462)
+('n02105056', 'groenendael', 0.05841647)
+('n02104365', 'schipperke', 0.039923094)
+('n02127052', 'lynx', 0.021608427)
+('n01877812', 'wallaby', 0.017458908)
+
+
+[295, 224, 223, 287, 104]
+gamma = 82
+('n02133161', 'American\_black\_bear', 0.7644462)
+('n02105056', 'groenendael', 0.05841647)
+('n02104365', 'schipperke', 0.039923094)
+('n02127052', 'lynx', 0.021608427)
+('n01877812', 'wallaby', 0.017458908)
+
+
+[295, 224, 223, 287, 104]
+gamma = 83
+('n02133161', 'American\_black\_bear', 0.7644462)
+('n02105056', 'groenendael', 0.05841647)
+('n02104365', 'schipperke', 0.039923094)
+('n02127052', 'lynx', 0.021608427)
+('n01877812', 'wallaby', 0.017458908)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number2.680663e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 287, 104]
+gamma = 84
+('n02133161', 'American\_black\_bear', 0.7644462)
+('n02105056', 'groenendael', 0.05841647)
+('n02104365', 'schipperke', 0.039923094)
+('n02127052', 'lynx', 0.021608427)
+('n01877812', 'wallaby', 0.017458908)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number2.036736e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 287, 104]
+gamma = 85
+('n02133161', 'American\_black\_bear', 0.7644462)
+('n02105056', 'groenendael', 0.05841647)
+('n02104365', 'schipperke', 0.039923094)
+('n02127052', 'lynx', 0.021608427)
+('n01877812', 'wallaby', 0.017458908)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number1.103028e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 287, 104]
+gamma = 86
+('n02133161', 'American\_black\_bear', 0.7644462)
+('n02105056', 'groenendael', 0.05841647)
+('n02104365', 'schipperke', 0.039923094)
+('n02127052', 'lynx', 0.021608427)
+('n01877812', 'wallaby', 0.017458908)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number9.150684e-18
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 287, 104]
+gamma = 87
+('n02133161', 'American\_black\_bear', 0.7751161)
+('n02105056', 'groenendael', 0.052611623)
+('n02104365', 'schipperke', 0.036867693)
+('n01877812', 'wallaby', 0.025530979)
+('n02127052', 'lynx', 0.020553973)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number5.098982e-18
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 104, 287]
+gamma = 88
+('n02133161', 'American\_black\_bear', 0.7751161)
+('n02105056', 'groenendael', 0.052611623)
+('n02104365', 'schipperke', 0.036867693)
+('n01877812', 'wallaby', 0.025530979)
+('n02127052', 'lynx', 0.020553973)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number3.181306e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 104, 287]
+gamma = 89
+('n02133161', 'American\_black\_bear', 0.8038147)
+('n02104365', 'schipperke', 0.049730297)
+('n02105056', 'groenendael', 0.035686176)
+('n02127052', 'lynx', 0.015253431)
+('n01877812', 'wallaby', 0.008090463)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number8.873599e-19
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 223, 224, 287, 104]
+gamma = 90
+('n02133161', 'American\_black\_bear', 0.8038147)
+('n02104365', 'schipperke', 0.049730297)
+('n02105056', 'groenendael', 0.035686176)
+('n02127052', 'lynx', 0.015253431)
+('n01877812', 'wallaby', 0.008090463)
+
+
+[295, 223, 224, 287, 104]
+gamma = 91
+('n02133161', 'American\_black\_bear', 0.803816)
+('n02104365', 'schipperke', 0.049729977)
+('n02105056', 'groenendael', 0.035686012)
+('n02127052', 'lynx', 0.015253274)
+('n01877812', 'wallaby', 0.00809048)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number7.048551e-18
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 223, 224, 287, 104]
+gamma = 92
+('n02133161', 'American\_black\_bear', 0.803816)
+('n02104365', 'schipperke', 0.049729977)
+('n02105056', 'groenendael', 0.035686012)
+('n02127052', 'lynx', 0.015253274)
+('n01877812', 'wallaby', 0.00809048)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number2.347908e-18
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 223, 224, 287, 104]
+gamma = 93
+('n02133161', 'American\_black\_bear', 0.803816)
+('n02104365', 'schipperke', 0.049729977)
+('n02105056', 'groenendael', 0.035686012)
+('n02127052', 'lynx', 0.015253274)
+('n01877812', 'wallaby', 0.00809048)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number1.305290e-18
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 223, 224, 287, 104]
+gamma = 94
+('n02133161', 'American\_black\_bear', 0.803816)
+('n02104365', 'schipperke', 0.049729977)
+('n02105056', 'groenendael', 0.035686012)
+('n02127052', 'lynx', 0.015253274)
+('n01877812', 'wallaby', 0.00809048)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number5.438783e-18
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 223, 224, 287, 104]
+gamma = 95
+('n02133161', 'American\_black\_bear', 0.8999815)
+('n02104365', 'schipperke', 0.031049019)
+('n02105056', 'groenendael', 0.029802082)
+('n01883070', 'wombat', 0.0076617603)
+('n01877812', 'wallaby', 0.0036220187)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number1.277260e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 223, 224, 106, 104]
+gamma = 96
+('n02133161', 'American\_black\_bear', 0.8999815)
+('n02104365', 'schipperke', 0.031049019)
+('n02105056', 'groenendael', 0.029802082)
+('n01883070', 'wombat', 0.0076617603)
+('n01877812', 'wallaby', 0.0036220187)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number2.547181e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 223, 224, 106, 104]
+gamma = 97
+('n02119789', 'kit\_fox', 0.42470428)
+('n02105056', 'groenendael', 0.06946887)
+('n02104365', 'schipperke', 0.06450516)
+('n02133161', 'American\_black\_bear', 0.061452225)
+('n02127052', 'lynx', 0.055293947)
+
+
+[278, 224, 223, 295, 287]
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_31_117.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}38}]:} \PY{n}{temp}\PY{p}{,} \PY{n}{mask} \PY{o}{=} \PY{n}{explanation}\PY{o}{.}\PY{n}{get\PYZus{}image\PYZus{}and\PYZus{}mask}\PY{p}{(}\PY{l+m+mi}{295}\PY{p}{,} \PY{n}{positive\PYZus{}only}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{num\PYZus{}features}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{hide\PYZus{}rest}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{mark\PYZus{}boundaries}\PY{p}{(}\PY{n}{temp} \PY{o}{/} \PY{l+m+mi}{2} \PY{o}{+} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{n}{mask}\PY{p}{)}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Contributing features in original:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Contributing features in original:
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_32_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}39}]:} \PY{c+c1}{\PYZsh{} Testing: Rotations}
+         
+         \PY{c+c1}{\PYZsh{} Original prediction}
+         \PY{n}{alter\PYZus{}image} \PY{o}{=} \PY{n}{transform\PYZus{}img\PYZus{}fn}\PY{p}{(}\PY{p}{[}\PY{n}{os}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cat\PYZus{}mouse.jpg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{]}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+         \PY{n}{preds} \PY{o}{=} \PY{n}{inet\PYZus{}model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{alter\PYZus{}image}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Original Prediction:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+         \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{decode\PYZus{}predictions}\PY{p}{(}\PY{n}{preds}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{p}{)}
+         
+         \PY{n}{cols}\PY{p}{,} \PY{n}{rows} \PY{o}{=} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{2}
+         \PY{n}{fig}\PY{p}{,} \PY{n}{axeslist} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{ncols}\PY{o}{=}\PY{n}{cols}\PY{p}{,} \PY{n}{nrows}\PY{o}{=}\PY{n}{rows}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{5} \PY{o}{*} \PY{n}{cols}\PY{p}{,} \PY{l+m+mi}{5} \PY{o}{*} \PY{n}{rows}\PY{p}{)}\PY{p}{)}
+         \PY{n}{i} \PY{o}{=} \PY{l+m+mi}{0}
+         
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Testing 90 Degree Rotations ...}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+         \PY{k}{for} \PY{n}{d} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Rotated: }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{d} \PY{o}{*} \PY{l+m+mi}{90}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ degrees counterclockwise}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+             \PY{n}{alter\PYZus{}image} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{rot90}\PY{p}{(}\PY{n}{alter\PYZus{}image}\PY{p}{)}
+             \PY{n}{preds} \PY{o}{=} \PY{n}{inet\PYZus{}model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{alter\PYZus{}image}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+             \PY{n}{preds} \PY{o}{=} \PY{n}{inet\PYZus{}model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{alter\PYZus{}image}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+             \PY{n}{tup} \PY{o}{=} \PY{n}{decode\PYZus{}predictions}\PY{p}{(}\PY{n}{preds}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+             \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{decode\PYZus{}predictions}\PY{p}{(}\PY{n}{preds}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{:}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+             \PY{n+nb}{print}\PY{p}{(}\PY{p}{)}
+             
+             \PY{n}{alt} \PY{o}{=} \PY{n}{alter\PYZus{}image}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+             \PY{n}{alt}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{where}\PY{p}{(}\PY{n}{alt} \PY{o}{\PYZgt{}} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{1}
+             \PY{n}{alt}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{where}\PY{p}{(}\PY{n}{alt} \PY{o}{\PYZlt{}} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{]} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+         
+             \PY{n}{axeslist}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{alt} \PY{o}{/} \PY{l+m+mi}{2} \PY{o}{+} \PY{o}{.}\PY{l+m+mi}{5}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{gray}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+             \PY{n}{axeslist}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Rotated: }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{d} \PY{o}{*} \PY{l+m+mi}{90}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ degrees counterclockwise}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+             \PY{n}{axeslist}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}axis\PYZus{}off}\PY{p}{(}\PY{p}{)}
+             \PY{n}{i} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+             
+             \PY{n}{ex\PYZus{}8} \PY{o}{=} \PY{n}{lime\PYZus{}image}\PY{o}{.}\PY{n}{LimeImageExplainer}\PY{p}{(}\PY{p}{)}
+             \PY{n}{expl\PYZus{}8} \PY{o}{=} \PY{n}{ex\PYZus{}8}\PY{o}{.}\PY{n}{explain\PYZus{}instance}\PY{p}{(}\PY{n}{alt}\PY{p}{,} \PY{n}{inet\PYZus{}model}\PY{o}{.}\PY{n}{predict}\PY{p}{,} \PY{n}{top\PYZus{}labels}\PY{o}{=}\PY{l+m+mi}{5}\PY{p}{,} \PY{n}{hide\PYZus{}color}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{num\PYZus{}samples}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{expl\PYZus{}8}\PY{o}{.}\PY{n}{top\PYZus{}labels}\PY{p}{)}\PY{p}{)}
+             \PY{n}{temp}\PY{p}{,} \PY{n}{mask} \PY{o}{=} \PY{n}{expl\PYZus{}8}\PY{o}{.}\PY{n}{get\PYZus{}image\PYZus{}and\PYZus{}mask}\PY{p}{(}\PY{n}{expl\PYZus{}8}\PY{o}{.}\PY{n}{top\PYZus{}labels}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{positive\PYZus{}only}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{num\PYZus{}features}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{hide\PYZus{}rest}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+             
+             \PY{n}{alt\PYZus{}marked} \PY{o}{=} \PY{n}{mark\PYZus{}boundaries}\PY{p}{(}\PY{n}{temp} \PY{o}{/} \PY{l+m+mi}{2} \PY{o}{+} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{n}{mask}\PY{p}{)}
+             \PY{n}{axeslist}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{alt\PYZus{}marked}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{gray}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+             \PY{n}{axeslist}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Rotated: }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{d} \PY{o}{*} \PY{l+m+mi}{90}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ degrees counterclockwise, contrib}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+             \PY{n}{axeslist}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}axis\PYZus{}off}\PY{p}{(}\PY{p}{)}
+             \PY{n}{i} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+         
+         \PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Original Prediction:
+('n02133161', 'American\_black\_bear', 0.63716227)
+('n02105056', 'groenendael', 0.031817853)
+('n02104365', 'schipperke', 0.029944101)
+('n01883070', 'wombat', 0.028509347)
+('n01877812', 'wallaby', 0.02509332)
+
+Testing 90 Degree Rotations {\ldots}
+
+Rotated: 90 degrees counterclockwise
+('n02133161', 'American\_black\_bear', 0.1319117)
+('n02480855', 'gorilla', 0.07502159)
+('n02492660', 'howler\_monkey', 0.06381178)
+('n02410509', 'bison', 0.057392772)
+('n02437616', 'llama', 0.056557424)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:154: UserWarning: Singular matrix in solving dual problem. Using least-squares solution instead.
+  warnings.warn("Singular matrix in solving dual problem. Using "
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 366, 379, 347, 355]
+Rotated: 180 degrees counterclockwise
+('n01872401', 'echidna', 0.22855957)
+('n01883070', 'wombat', 0.13900973)
+('n01514859', 'hen', 0.08975421)
+('n02442845', 'mink', 0.07283429)
+('n02346627', 'porcupine', 0.054075543)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number2.925427e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[102, 106, 8, 357, 334]
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_33_5.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}24}]:} \PY{n}{temp}\PY{p}{,} \PY{n}{mask} \PY{o}{=} \PY{n}{explanation}\PY{o}{.}\PY{n}{get\PYZus{}image\PYZus{}and\PYZus{}mask}\PY{p}{(}\PY{l+m+mi}{295}\PY{p}{,} \PY{n}{positive\PYZus{}only}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{num\PYZus{}features}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{hide\PYZus{}rest}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{mark\PYZus{}boundaries}\PY{p}{(}\PY{n}{temp} \PY{o}{/} \PY{l+m+mi}{2} \PY{o}{+} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{n}{mask}\PY{p}{)}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Contributing features in original:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Contributing features in original:
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_34_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}40}]:} \PY{c+c1}{\PYZsh{} Testing: Rotations}
+         
+         \PY{c+c1}{\PYZsh{} Original prediction}
+         \PY{n}{alter\PYZus{}image} \PY{o}{=} \PY{n}{transform\PYZus{}img\PYZus{}fn}\PY{p}{(}\PY{p}{[}\PY{n}{os}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cat\PYZus{}mouse.jpg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{]}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+         \PY{n}{preds} \PY{o}{=} \PY{n}{inet\PYZus{}model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{alter\PYZus{}image}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Original Prediction:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+         \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{decode\PYZus{}predictions}\PY{p}{(}\PY{n}{preds}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{p}{)}
+         
+         \PY{n}{cols}\PY{p}{,} \PY{n}{rows} \PY{o}{=} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{3}
+         \PY{n}{fig}\PY{p}{,} \PY{n}{axeslist} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{ncols}\PY{o}{=}\PY{n}{cols}\PY{p}{,} \PY{n}{nrows}\PY{o}{=}\PY{n}{rows}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{5} \PY{o}{*} \PY{n}{cols}\PY{p}{,} \PY{l+m+mi}{5} \PY{o}{*} \PY{n}{rows}\PY{p}{)}\PY{p}{)}
+         \PY{n}{i} \PY{o}{=} \PY{l+m+mi}{0}
+         
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Testing 90 Degree Rotations ...}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+         \PY{k}{for} \PY{n}{d} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Rotated: }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{d} \PY{o}{*} \PY{l+m+mi}{90}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ degrees counterclockwise}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+             \PY{n}{alter\PYZus{}image} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{rot90}\PY{p}{(}\PY{n}{alter\PYZus{}image}\PY{p}{)}
+             \PY{n}{preds} \PY{o}{=} \PY{n}{inet\PYZus{}model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{alter\PYZus{}image}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+             \PY{n}{preds} \PY{o}{=} \PY{n}{inet\PYZus{}model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{alter\PYZus{}image}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+             \PY{n}{tup} \PY{o}{=} \PY{n}{decode\PYZus{}predictions}\PY{p}{(}\PY{n}{preds}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+             \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{decode\PYZus{}predictions}\PY{p}{(}\PY{n}{preds}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{:}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+             \PY{n+nb}{print}\PY{p}{(}\PY{p}{)}
+             
+             \PY{n}{alt} \PY{o}{=} \PY{n}{alter\PYZus{}image}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+             \PY{n}{alt}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{where}\PY{p}{(}\PY{n}{alt} \PY{o}{\PYZgt{}} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{1}
+             \PY{n}{alt}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{where}\PY{p}{(}\PY{n}{alt} \PY{o}{\PYZlt{}} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{]} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+         
+             \PY{n}{axeslist}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{alt} \PY{o}{/} \PY{l+m+mi}{2} \PY{o}{+} \PY{o}{.}\PY{l+m+mi}{5}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{gray}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+             \PY{n}{axeslist}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Rotated: }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{d} \PY{o}{*} \PY{l+m+mi}{90}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ degrees counterclockwise}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+             \PY{n}{axeslist}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}axis\PYZus{}off}\PY{p}{(}\PY{p}{)}
+             \PY{n}{i} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+             
+             \PY{n}{ex\PYZus{}9} \PY{o}{=} \PY{n}{lime\PYZus{}image}\PY{o}{.}\PY{n}{LimeImageExplainer}\PY{p}{(}\PY{p}{)}
+             \PY{n}{expl\PYZus{}9} \PY{o}{=} \PY{n}{ex\PYZus{}9}\PY{o}{.}\PY{n}{explain\PYZus{}instance}\PY{p}{(}\PY{n}{alt}\PY{p}{,} \PY{n}{inet\PYZus{}model}\PY{o}{.}\PY{n}{predict}\PY{p}{,} \PY{n}{top\PYZus{}labels}\PY{o}{=}\PY{l+m+mi}{5}\PY{p}{,} \PY{n}{hide\PYZus{}color}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{num\PYZus{}samples}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{expl\PYZus{}9}\PY{o}{.}\PY{n}{top\PYZus{}labels}\PY{p}{)}\PY{p}{)}
+             \PY{n}{temp}\PY{p}{,} \PY{n}{mask} \PY{o}{=} \PY{n}{expl\PYZus{}9}\PY{o}{.}\PY{n}{get\PYZus{}image\PYZus{}and\PYZus{}mask}\PY{p}{(}\PY{n}{expl\PYZus{}9}\PY{o}{.}\PY{n}{top\PYZus{}labels}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{positive\PYZus{}only}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{num\PYZus{}features}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{hide\PYZus{}rest}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+             
+             \PY{n}{alt\PYZus{}marked} \PY{o}{=} \PY{n}{mark\PYZus{}boundaries}\PY{p}{(}\PY{n}{temp} \PY{o}{/} \PY{l+m+mi}{2} \PY{o}{+} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{n}{mask}\PY{p}{)}
+             \PY{n}{axeslist}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{alt\PYZus{}marked}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{gray}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+             \PY{n}{axeslist}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Rotated: }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{d} \PY{o}{*} \PY{l+m+mi}{90}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ degrees counterclockwise, contrib}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+             \PY{n}{axeslist}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}axis\PYZus{}off}\PY{p}{(}\PY{p}{)}
+             \PY{n}{i} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+         
+         \PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Original Prediction:
+('n02133161', 'American\_black\_bear', 0.63716227)
+('n02105056', 'groenendael', 0.031817853)
+('n02104365', 'schipperke', 0.029944101)
+('n01883070', 'wombat', 0.028509347)
+('n01877812', 'wallaby', 0.02509332)
+
+Testing 90 Degree Rotations {\ldots}
+
+Rotated: 90 degrees counterclockwise
+('n02133161', 'American\_black\_bear', 0.1319117)
+('n02480855', 'gorilla', 0.07502159)
+('n02492660', 'howler\_monkey', 0.06381178)
+('n02410509', 'bison', 0.057392772)
+('n02437616', 'llama', 0.056557424)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:154: UserWarning: Singular matrix in solving dual problem. Using least-squares solution instead.
+  warnings.warn("Singular matrix in solving dual problem. Using "
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 366, 379, 347, 355]
+Rotated: 180 degrees counterclockwise
+('n01872401', 'echidna', 0.22855957)
+('n01883070', 'wombat', 0.13900973)
+('n01514859', 'hen', 0.08975421)
+('n02442845', 'mink', 0.07283429)
+('n02346627', 'porcupine', 0.054075543)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number1.620001e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[102, 106, 8, 357, 334]
+Rotated: 270 degrees counterclockwise
+('n02104365', 'schipperke', 0.80063075)
+('n02133161', 'American\_black\_bear', 0.054653365)
+('n02105056', 'groenendael', 0.043697134)
+('n02480855', 'gorilla', 0.0032963653)
+('n02442845', 'mink', 0.0024145108)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number4.873002e-18
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[223, 295, 224, 366, 357]
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_35_7.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}26}]:} \PY{n}{temp}\PY{p}{,} \PY{n}{mask} \PY{o}{=} \PY{n}{explanation}\PY{o}{.}\PY{n}{get\PYZus{}image\PYZus{}and\PYZus{}mask}\PY{p}{(}\PY{l+m+mi}{295}\PY{p}{,} \PY{n}{positive\PYZus{}only}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{num\PYZus{}features}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{hide\PYZus{}rest}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{mark\PYZus{}boundaries}\PY{p}{(}\PY{n}{temp} \PY{o}{/} \PY{l+m+mi}{2} \PY{o}{+} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{n}{mask}\PY{p}{)}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Contributing features in original:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Contributing features in original:
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_36_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{c+c1}{\PYZsh{} Testing: Zoom}
+        
+        \PY{c+c1}{\PYZsh{} Original prediction}
+        \PY{n}{alter\PYZus{}image} \PY{o}{=} \PY{n}{transform\PYZus{}img\PYZus{}fn}\PY{p}{(}\PY{p}{[}\PY{n}{os}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cat\PYZus{}mouse.jpg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{]}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+        \PY{n}{preds} \PY{o}{=} \PY{n}{inet\PYZus{}model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{alter\PYZus{}image}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Original Prediction:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{decode\PYZus{}predictions}\PY{p}{(}\PY{n}{preds}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{:}
+            \PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{p}{)}
+        
+        \PY{n}{cols}\PY{p}{,} \PY{n}{rows} \PY{o}{=} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{35}
+        \PY{n}{fig}\PY{p}{,} \PY{n}{axeslist} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{ncols}\PY{o}{=}\PY{n}{cols}\PY{p}{,} \PY{n}{nrows}\PY{o}{=}\PY{n}{rows}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{5} \PY{o}{*} \PY{n}{cols}\PY{p}{,} \PY{l+m+mi}{5} \PY{o}{*} \PY{n}{rows}\PY{p}{)}\PY{p}{)}
+        \PY{n}{i} \PY{o}{=} \PY{l+m+mi}{0}
+        
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Testing Zoom In ...}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} zoom should be \PYZlt{} (299/2)}
+        \PY{n}{zoom}\PY{p}{,} \PY{n}{result} \PY{o}{=} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{American\PYZus{}black\PYZus{}bear}\PY{l+s+s2}{\PYZdq{}}
+        \PY{k}{while} \PY{n}{zoom} \PY{o}{\PYZlt{}} \PY{l+m+mi}{299} \PY{o}{/} \PY{l+m+mi}{2} \PY{o+ow}{and} \PY{n}{result} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{American\PYZus{}black\PYZus{}bear}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{zoom = }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{zoom}\PY{p}{)}\PY{p}{)}
+            \PY{n}{zoomed} \PY{o}{=} \PY{n}{alter\PYZus{}image}\PY{p}{[}\PY{n}{zoom}\PY{p}{:}\PY{o}{\PYZhy{}}\PY{n}{zoom}\PY{p}{,} \PY{n}{zoom}\PY{p}{:}\PY{o}{\PYZhy{}}\PY{n}{zoom}\PY{p}{]}
+            \PY{n}{preds} \PY{o}{=} \PY{n}{inet\PYZus{}model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{zoomed}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+            \PY{n}{preds} \PY{o}{=} \PY{n}{inet\PYZus{}model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{zoomed}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+            \PY{n}{tup} \PY{o}{=} \PY{n}{decode\PYZus{}predictions}\PY{p}{(}\PY{n}{preds}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+            \PY{n}{result} \PY{o}{=} \PY{n}{tup}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}
+            \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{decode\PYZus{}predictions}\PY{p}{(}\PY{n}{preds}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{:}
+                \PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+            \PY{n+nb}{print}\PY{p}{(}\PY{p}{)}
+            
+            \PY{n}{alt} \PY{o}{=} \PY{n}{alter\PYZus{}image}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+            \PY{n}{alt}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{where}\PY{p}{(}\PY{n}{alt} \PY{o}{\PYZgt{}} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{1}
+            \PY{n}{alt}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{where}\PY{p}{(}\PY{n}{alt} \PY{o}{\PYZlt{}} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{]} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+        
+            \PY{n}{axeslist}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{alt} \PY{o}{/} \PY{l+m+mi}{2} \PY{o}{+} \PY{o}{.}\PY{l+m+mi}{5}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{gray}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+            \PY{n}{axeslist}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{zoom: }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{zoom}\PY{p}{)}\PY{p}{)}
+            \PY{n}{axeslist}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}axis\PYZus{}off}\PY{p}{(}\PY{p}{)}
+            \PY{n}{i} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+            
+            \PY{n}{ex\PYZus{}10} \PY{o}{=} \PY{n}{lime\PYZus{}image}\PY{o}{.}\PY{n}{LimeImageExplainer}\PY{p}{(}\PY{p}{)}
+            \PY{n}{expl\PYZus{}10} \PY{o}{=} \PY{n}{ex\PYZus{}10}\PY{o}{.}\PY{n}{explain\PYZus{}instance}\PY{p}{(}\PY{n}{alt}\PY{p}{,} \PY{n}{inet\PYZus{}model}\PY{o}{.}\PY{n}{predict}\PY{p}{,} \PY{n}{top\PYZus{}labels}\PY{o}{=}\PY{l+m+mi}{5}\PY{p}{,} \PY{n}{hide\PYZus{}color}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{num\PYZus{}samples}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{expl\PYZus{}10}\PY{o}{.}\PY{n}{top\PYZus{}labels}\PY{p}{)}\PY{p}{)}
+            \PY{n}{temp}\PY{p}{,} \PY{n}{mask} \PY{o}{=} \PY{n}{expl\PYZus{}10}\PY{o}{.}\PY{n}{get\PYZus{}image\PYZus{}and\PYZus{}mask}\PY{p}{(}\PY{n}{expl\PYZus{}10}\PY{o}{.}\PY{n}{top\PYZus{}labels}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{positive\PYZus{}only}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{num\PYZus{}features}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{hide\PYZus{}rest}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+            
+            \PY{n}{alt\PYZus{}marked} \PY{o}{=} \PY{n}{mark\PYZus{}boundaries}\PY{p}{(}\PY{n}{temp} \PY{o}{/} \PY{l+m+mi}{2} \PY{o}{+} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{n}{mask}\PY{p}{)}
+            \PY{n}{axeslist}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{alt\PYZus{}marked}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{gray}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+            \PY{n}{axeslist}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{zoom: }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{zoom}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{, contrib}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+            \PY{n}{axeslist}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}axis\PYZus{}off}\PY{p}{(}\PY{p}{)}
+            \PY{n}{i} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+                                          
+            \PY{n}{zoom} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+        
+        \PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Original Prediction:
+('n02133161', 'American\_black\_bear', 0.63716227)
+('n02105056', 'groenendael', 0.031817853)
+('n02104365', 'schipperke', 0.029944101)
+('n01883070', 'wombat', 0.028509347)
+('n01877812', 'wallaby', 0.02509332)
+
+Testing Zoom In {\ldots}
+
+
+zoom = 1
+('n02133161', 'American\_black\_bear', 0.8004824)
+('n02105056', 'groenendael', 0.035315737)
+('n02119789', 'kit\_fox', 0.019865368)
+('n01877812', 'wallaby', 0.01636774)
+('n02104365', 'schipperke', 0.013046869)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number2.113540e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 106, 104]
+
+zoom = 2
+('n02133161', 'American\_black\_bear', 0.5860035)
+('n01877812', 'wallaby', 0.075182855)
+('n02105056', 'groenendael', 0.038232107)
+('n02119789', 'kit\_fox', 0.027865587)
+('n02442845', 'mink', 0.027750475)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:154: UserWarning: Singular matrix in solving dual problem. Using least-squares solution instead.
+  warnings.warn("Singular matrix in solving dual problem. Using "
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 106, 104]
+
+zoom = 3
+('n02133161', 'American\_black\_bear', 0.63061124)
+('n02119789', 'kit\_fox', 0.06259586)
+('n02105056', 'groenendael', 0.04940763)
+('n01877812', 'wallaby', 0.028843934)
+('n02442845', 'mink', 0.019423526)
+
+
+[295, 224, 223, 106, 104]
+
+zoom = 4
+('n02133161', 'American\_black\_bear', 0.421288)
+('n02105056', 'groenendael', 0.11086391)
+('n01877812', 'wallaby', 0.08137637)
+('n02119789', 'kit\_fox', 0.042151086)
+('n02104365', 'schipperke', 0.036465663)
+
+
+[295, 224, 223, 106, 104]
+
+zoom = 5
+('n02133161', 'American\_black\_bear', 0.45239848)
+('n02119789', 'kit\_fox', 0.08198119)
+('n02105056', 'groenendael', 0.05818936)
+('n01877812', 'wallaby', 0.049045257)
+('n02112137', 'chow', 0.030411508)
+
+
+[295, 224, 223, 106, 104]
+
+zoom = 6
+('n02133161', 'American\_black\_bear', 0.38133627)
+('n01877812', 'wallaby', 0.07339819)
+('n02105056', 'groenendael', 0.06510631)
+('n02119789', 'kit\_fox', 0.044521756)
+('n02104365', 'schipperke', 0.03755472)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number1.099885e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 106, 104]
+
+zoom = 7
+('n02133161', 'American\_black\_bear', 0.4330284)
+('n02119789', 'kit\_fox', 0.048877567)
+('n01877812', 'wallaby', 0.031914275)
+('n02105056', 'groenendael', 0.027760014)
+('n02112137', 'chow', 0.01984423)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number5.341535e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 106, 104]
+
+zoom = 8
+('n02133161', 'American\_black\_bear', 0.3455663)
+('n02105056', 'groenendael', 0.083394215)
+('n02104365', 'schipperke', 0.07184055)
+('n01877812', 'wallaby', 0.05644944)
+('n02112137', 'chow', 0.03804602)
+
+
+[295, 224, 223, 106, 104]
+
+zoom = 9
+('n02133161', 'American\_black\_bear', 0.79643154)
+('n02105056', 'groenendael', 0.018787576)
+('n01877812', 'wallaby', 0.01236875)
+('n02104365', 'schipperke', 0.0110273175)
+('n02127052', 'lynx', 0.008448634)
+
+
+[295, 224, 223, 106, 104]
+
+zoom = 10
+('n02133161', 'American\_black\_bear', 0.3239889)
+('n01877812', 'wallaby', 0.08257735)
+('n02127052', 'lynx', 0.07646627)
+('n02105056', 'groenendael', 0.033472013)
+('n02123159', 'tiger\_cat', 0.02913639)
+
+
+[295, 224, 223, 106, 104]
+
+zoom = 11
+('n02133161', 'American\_black\_bear', 0.3315089)
+('n02127052', 'lynx', 0.09423257)
+('n01883070', 'wombat', 0.075372286)
+('n02119789', 'kit\_fox', 0.043783616)
+('n01877812', 'wallaby', 0.043617327)
+
+
+[295, 224, 223, 106, 104]
+
+zoom = 12
+('n02133161', 'American\_black\_bear', 0.36035058)
+('n01877812', 'wallaby', 0.071223475)
+('n02105056', 'groenendael', 0.048166364)
+('n02127052', 'lynx', 0.048052125)
+('n02442845', 'mink', 0.042116895)
+
+
+[295, 224, 223, 106, 104]
+
+zoom = 13
+('n02133161', 'American\_black\_bear', 0.63166934)
+('n01877812', 'wallaby', 0.05558136)
+('n02127052', 'lynx', 0.039870583)
+('n01883070', 'wombat', 0.022724021)
+('n02105056', 'groenendael', 0.022406723)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number3.065440e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 106, 104]
+
+zoom = 14
+('n02133161', 'American\_black\_bear', 0.2842277)
+('n01877812', 'wallaby', 0.090889946)
+('n02127052', 'lynx', 0.04660418)
+('n02104365', 'schipperke', 0.04287437)
+('n02105056', 'groenendael', 0.036504712)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number4.468295e-18
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 106, 104]
+
+zoom = 15
+('n02133161', 'American\_black\_bear', 0.4070456)
+('n01883070', 'wombat', 0.078452796)
+('n02127052', 'lynx', 0.06809184)
+('n01877812', 'wallaby', 0.042447556)
+('n02104365', 'schipperke', 0.0242354)
+
+
+[295, 224, 223, 106, 104]
+
+zoom = 16
+('n02133161', 'American\_black\_bear', 0.61172795)
+('n01877812', 'wallaby', 0.040756043)
+('n02105056', 'groenendael', 0.03214788)
+('n02104365', 'schipperke', 0.029494002)
+('n01883070', 'wombat', 0.025386749)
+
+
+[295, 224, 223, 106, 104]
+
+zoom = 17
+('n02133161', 'American\_black\_bear', 0.7477303)
+('n01877812', 'wallaby', 0.05031498)
+('n02125311', 'cougar', 0.031006232)
+('n02127052', 'lynx', 0.02784707)
+('n02105056', 'groenendael', 0.011887451)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number5.417531e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 106, 104]
+
+zoom = 18
+('n02133161', 'American\_black\_bear', 0.44593602)
+('n01877812', 'wallaby', 0.11785366)
+('n02127052', 'lynx', 0.08497088)
+('n02125311', 'cougar', 0.043951277)
+('n02123159', 'tiger\_cat', 0.03037528)
+
+
+[295, 224, 223, 106, 104]
+
+zoom = 19
+('n02133161', 'American\_black\_bear', 0.68491596)
+('n01877812', 'wallaby', 0.08678853)
+('n02127052', 'lynx', 0.03491089)
+('n02105056', 'groenendael', 0.01814329)
+('n02125311', 'cougar', 0.016401332)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number1.928660e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 106, 104]
+
+zoom = 20
+('n02133161', 'American\_black\_bear', 0.7577662)
+('n01877812', 'wallaby', 0.060026214)
+('n02104365', 'schipperke', 0.035162672)
+('n02105056', 'groenendael', 0.028599989)
+('n02112137', 'chow', 0.010538299)
+
+
+[295, 224, 223, 106, 104]
+
+zoom = 21
+('n02133161', 'American\_black\_bear', 0.75448215)
+('n01877812', 'wallaby', 0.06999644)
+('n02127052', 'lynx', 0.03162171)
+('n02125311', 'cougar', 0.011155553)
+('n02105056', 'groenendael', 0.007829493)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number3.099314e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 106, 104]
+
+zoom = 22
+('n02133161', 'American\_black\_bear', 0.23795882)
+('n02127052', 'lynx', 0.14711878)
+('n02123159', 'tiger\_cat', 0.084701024)
+('n02112137', 'chow', 0.05704711)
+('n01877812', 'wallaby', 0.041595668)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number2.442671e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 106, 104]
+
+zoom = 23
+('n02133161', 'American\_black\_bear', 0.6171729)
+('n02127052', 'lynx', 0.055554222)
+('n01877812', 'wallaby', 0.029674515)
+('n02112137', 'chow', 0.029559698)
+('n02105056', 'groenendael', 0.02838569)
+
+
+[295, 224, 223, 106, 104]
+
+zoom = 24
+('n02133161', 'American\_black\_bear', 0.7168845)
+('n02105056', 'groenendael', 0.064745225)
+('n02104365', 'schipperke', 0.06386637)
+('n02112137', 'chow', 0.044515405)
+('n01877812', 'wallaby', 0.014118278)
+
+
+[295, 224, 223, 106, 104]
+
+zoom = 25
+('n02133161', 'American\_black\_bear', 0.5248649)
+('n02127052', 'lynx', 0.25657493)
+('n02105056', 'groenendael', 0.051094674)
+('n02104365', 'schipperke', 0.023645896)
+('n02123159', 'tiger\_cat', 0.019269545)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number1.795471e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 106, 104]
+
+zoom = 26
+('n02133161', 'American\_black\_bear', 0.45774958)
+('n02127052', 'lynx', 0.15505143)
+('n02105056', 'groenendael', 0.1214458)
+('n02104365', 'schipperke', 0.075984955)
+('n02123159', 'tiger\_cat', 0.022084706)
+
+
+[295, 224, 223, 106, 104]
+
+zoom = 27
+('n02133161', 'American\_black\_bear', 0.5323706)
+('n02104365', 'schipperke', 0.14421166)
+('n02105056', 'groenendael', 0.11084382)
+('n02127052', 'lynx', 0.053373277)
+('n02112137', 'chow', 0.024800448)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/data/rliaw/miniconda3/envs/tf3/lib/python3.5/site-packages/sklearn/linear\_model/ridge.py:152: LinAlgWarning: scipy.linalg.solve
+Ill-conditioned matrix detected. Result is not guaranteed to be accurate.
+Reciprocal condition number2.444981e-17
+  overwrite\_a=False)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+[295, 224, 223, 106, 104]
+
+zoom = 28
+('n02133161', 'American\_black\_bear', 0.7664111)
+('n02105056', 'groenendael', 0.05480514)
+('n02104365', 'schipperke', 0.04214045)
+('n02112137', 'chow', 0.026799386)
+('n01877812', 'wallaby', 0.022834899)
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{temp}\PY{p}{,} \PY{n}{mask} \PY{o}{=} \PY{n}{explanation}\PY{o}{.}\PY{n}{get\PYZus{}image\PYZus{}and\PYZus{}mask}\PY{p}{(}\PY{l+m+mi}{295}\PY{p}{,} \PY{n}{positive\PYZus{}only}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{num\PYZus{}features}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{hide\PYZus{}rest}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{mark\PYZus{}boundaries}\PY{p}{(}\PY{n}{temp} \PY{o}{/} \PY{l+m+mi}{2} \PY{o}{+} \PY{l+m+mf}{0.5}\PY{p}{,} \PY{n}{mask}\PY{p}{)}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Contributing features in original:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}
