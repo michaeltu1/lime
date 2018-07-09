@@ -66,7 +66,7 @@ class ImageExplanation(object):
             return temp, mask
         elif outline:
             fs = [x[0] for x in exp
-                  if x[1] > min_weight][:]
+                  if x[1] > min_weight][:num_features]
             for f in fs:
                 temp[segments == f] = image[segments == f].copy()
                 mask[segments == f] = 1
