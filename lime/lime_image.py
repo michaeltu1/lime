@@ -28,7 +28,7 @@ class ImageExplanation(object):
         self.local_pred = None
 
     def get_image_and_mask(self, label, positive_only=True, hide_rest=False,
-                           num_features=5, min_weight=0.):
+                           num_features=5, min_weight=0., outline=False):
         """Init function.
 
         Args:
@@ -60,6 +60,13 @@ class ImageExplanation(object):
         if positive_only:
             fs = [x[0] for x in exp
                   if x[1] > 0 and x[1] > min_weight][:num_features]
+            for f in fs:
+                temp[segments == f] = image[segments == f].copy()
+                mask[segments == f] = 1
+            return temp, mask
+        elif outline:
+            fs = [x[0] for x in exp
+                  if x[1] > min_weight][:]
             for f in fs:
                 temp[segments == f] = image[segments == f].copy()
                 mask[segments == f] = 1
