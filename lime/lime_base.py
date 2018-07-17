@@ -151,13 +151,7 @@ class LimeBase(object):
 
         weights = self.kernel_fn(distances)
 
-        # Sketchy added code
-        if len(neighborhood_labels.shape) == 1:
-            n_labels = neighborhood_labels[np.newaxis,]
-            labels_column = n_labels[:, label]
-        else:
-            labels_column = neighborhood_labels[:, label]
-        
+        labels_column = neighborhood_labels[:, label]
         used_features = self.feature_selection(neighborhood_data,
                                                labels_column,
                                                weights,
