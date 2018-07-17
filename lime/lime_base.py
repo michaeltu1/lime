@@ -152,7 +152,7 @@ class LimeBase(object):
         weights = self.kernel_fn(distances)
 
         # Sketchy added code
-        if len(neighborhood_labels) == 1:
+        if len(neighborhood_labels.shape) == 1:
             n_labels = neighborhood_labels[np.newaxis,]
             labels_column = n_labels[:, label]
         else:
