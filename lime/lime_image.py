@@ -120,6 +120,9 @@ class LimeImageExplainer(object):
         self.feature_selection = feature_selection
         self.base = lime_base.LimeBase(kernel, verbose, random_state=self.random_state)
         self.random_seed = None
+        self.data = None
+        self.labels = None
+        self.top = None
 
     def explain_instance(self, image, classifier_fn, labels=(1,),
                          hide_color=None,
@@ -194,6 +197,7 @@ class LimeImageExplainer(object):
         data, labels = self.data_labels(image, fudged_image, segments,
                                         classifier_fn, num_samples,
                                         batch_size=batch_size)
+        self.data, self.labels = data, labels
 
         distances = sklearn.metrics.pairwise_distances(
             data,
@@ -204,6 +208,7 @@ class LimeImageExplainer(object):
         ret_exp = ImageExplanation(image, segments)
         if top_labels:
             top = np.argsort(labels[0])[-top_labels:]
+            self.top = top
             ret_exp.top_labels = list(top)
             ret_exp.top_labels.reverse()
         for label in top:
