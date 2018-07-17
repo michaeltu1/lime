@@ -198,6 +198,8 @@ class LimeImageExplainer(object):
                                         classifier_fn, num_samples,
                                         batch_size=batch_size)
         self.data, self.labels = data, labels
+        print("data:\n" + str(data))
+        print("labels:\n" + str(labels))
 
         distances = sklearn.metrics.pairwise_distances(
             data,
@@ -209,6 +211,7 @@ class LimeImageExplainer(object):
         if top_labels:
             top = np.argsort(labels[0])[-top_labels:]
             self.top = top
+            print("top:\n" + str(top))
             ret_exp.top_labels = list(top)
             ret_exp.top_labels.reverse()
         for label in top:
