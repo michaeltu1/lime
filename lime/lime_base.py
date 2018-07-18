@@ -158,6 +158,9 @@ class LimeBase(object):
                                                num_features,
                                                feature_selection)
 
+        print("labels_column:\n" + str(labels_column))
+        print("used_features:\n" + str(used_features))
+
         if model_regressor is None:
             model_regressor = Ridge(alpha=1, fit_intercept=True,
                                     random_state=self.random_state)
@@ -169,6 +172,7 @@ class LimeBase(object):
             labels_column, sample_weight=weights)
 
         local_pred = easy_model.predict(neighborhood_data[0, used_features].reshape(1, -1))
+        print("local_pred:\n" + str(local_pred))
 
         self.model = easy_model
 
