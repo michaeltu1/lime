@@ -151,6 +151,10 @@ class LimeBase(object):
 
         weights = self.kernel_fn(distances)
 
+        print("neighborhood_labels:")
+        print(neighborhood_labels)
+        print("label")
+        print(label)
         labels_column = neighborhood_labels[:, label]
         used_features = self.feature_selection(neighborhood_data,
                                                labels_column,
