@@ -197,7 +197,8 @@ class LimeImageExplainer(object):
         data, labels = self.data_labels(image, fudged_image, segments,
                                         classifier_fn, num_samples,
                                         batch_size=batch_size)
-        self.data, self.labels = data, labels
+        print("Data:\n" + str(data))
+        print("Labels:\n" + str(labels))
 
         distances = sklearn.metrics.pairwise_distances(
             data,
@@ -208,7 +209,6 @@ class LimeImageExplainer(object):
         ret_exp = ImageExplanation(image, segments)
         if top_labels:
             top = np.argsort(labels[0])[-top_labels:]
-            self.top = top
             ret_exp.top_labels = list(top)
             ret_exp.top_labels.reverse()
         for label in top:
