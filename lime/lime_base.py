@@ -155,7 +155,14 @@ class LimeBase(object):
         print(neighborhood_labels)
         print("label")
         print(label)
-        labels_column = neighborhood_labels[:, label]
+
+        # Added sketchy code
+        if len(neighborhood_labels.shape) == 1:
+            print('entered sketchy if case')
+            labels_column = neighborhood_labels[label]
+        else:
+            labels_column = neighborhood_labels[:, label]
+        
         used_features = self.feature_selection(neighborhood_data,
                                                labels_column,
                                                weights,
