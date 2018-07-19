@@ -197,8 +197,6 @@ class LimeImageExplainer(object):
         data, labels = self.data_labels(image, fudged_image, segments,
                                         classifier_fn, num_samples,
                                         batch_size=batch_size)
-        print("Data:\n" + str(data))
-        print("Labels:\n" + str(labels))
 
         distances = sklearn.metrics.pairwise_distances(
             data,
