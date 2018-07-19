@@ -207,7 +207,7 @@ class LimeBase(object):
           n_data = neighborhood_data[0 : (i + 1) * 10, used_features]
           labels_column = labels_columns[i]
 
-          m = Ridge(alpha=1, fit_intercept=True, random_state=42) for i in range(num_samples)
+          m = Ridge(alpha=1, fit_intercept=True, random_state=42)
           m.fit(n_data, labels_column, sample_weight=weights)
           easy_models.append(m)
 
