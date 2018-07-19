@@ -307,7 +307,7 @@ class LimeImageExplainer(object):
             ret_exp.top_labels.reverse()
         for label in top:
             (easy_models, prediction_scores, local_preds, temps_masks) = self.base.explain_instance_with_data_2(
-                data, labels, distances, label, num_features, segments, image
+                data, labels, distances, label, num_features, segments, image,
                 model_regressor=model_regressor,
                 feature_selection=self.feature_selection)
 
