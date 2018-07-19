@@ -197,8 +197,9 @@ class LimeBase(object):
       num_samples = neighborhood_data.shape[0]
       easy_models, prediction_scores, local_preds, temps_masks = [], [], [], []
       labels_columns = [neighborhood_labels[0: (i + 1) * 10] for i in range(num_samples)]
+
       used_features = self.feature_selection(neighborhood_data,
-                                             labels_column,
+                                             neighborhood_labels[:, label],
                                              weights,
                                              num_features,
                                              feature_selection)
