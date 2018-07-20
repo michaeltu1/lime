@@ -210,12 +210,13 @@ class LimeBase(object):
       for i in range(num_samples):
           n_data = neighborhood_data[0 : (i + 1) * 10, used_features]
           labels_column = labels_columns[i]
+          weits = weights[0 : (i + 1) * 10]
 
           m = Ridge(alpha=1, fit_intercept=True, random_state=42)
-          m.fit(n_data, labels_column, sample_weight=weights)
+          m.fit(n_data, labels_column, sample_weight=weits)
           easy_models.append(m)
 
-          _score = m.score(n_data, labels_column, sample_weight=weights)
+          _score = m.score(n_data, labels_column, sample_weight=weits)
           prediction_scores.append(_score)
 
           _local_pred = m.predict(neighborhood_data[0, used_features].reshape(1, -1))
