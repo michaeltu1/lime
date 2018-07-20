@@ -172,8 +172,8 @@ class LimeBase(object):
 
         self.model = easy_model
 
-        print("m.coef_: " + str(m.coef_))
-        print("m.coef_.shape: " + str(m.coef_.shape))
+        print("model.coef_: " + str(model.coef_))
+        print("model.coef_.shape: " + str(model.coef_.shape))
         print("used_features: " + str(used_features))
         print("used_features.shape: " + str(used_features.shape))
 
