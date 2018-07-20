@@ -221,7 +221,7 @@ class LimeImageExplainer(object):
                 feature_selection=self.feature_selection)
 
             if trace:
-                trace = [str(label) + ", " + str(ret_exp.local_pred), ret_exp.score] + trace
+                _trace = [str(label) + ", " + str(ret_exp.local_pred), ret_exp.score] + _trace
 
         if trace:
             print("{:>19}  {:<12}{:>12}  {:<12}{:>12}  {:<12}{:>12}  {:<12}{:>12}  {:<12}".format(*_trace))
