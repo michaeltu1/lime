@@ -205,6 +205,8 @@ class LimeImageExplainer(object):
             metric=distance_metric
         ).ravel()
 
+        _trace = []
+
         ret_exp = ImageExplanation(image, segments)
         if top_labels:
             top = np.argsort(labels[0])[-top_labels:]
@@ -219,9 +221,10 @@ class LimeImageExplainer(object):
                 feature_selection=self.feature_selection)
 
             if trace:
-                print("\nlabel:      " + str(label))
-                print("score:      " + str(ret_exp.score))
-                print("local_pred: " + str(ret_exp.local_pred))
+                trace = [str(label) + ", " + str(ret_exp.local_pred), ret_exp.score] + trace
+
+        if trace:
+            print("{:>19}  {:<12}{:>12}  {:<12}{:>12}  {:<12}{:>12}  {:<12}{:>12}  {:<12}".format(*_trace))
 
         return ret_exp
 
