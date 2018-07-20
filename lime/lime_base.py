@@ -223,7 +223,7 @@ class LimeBase(object):
           local_preds.append(_local_pred)
 
 	  print("m.coef_: " + str(m.coef_))
-	  print("used_features: " + str(used_features))
+          print("used_features: " + str(used_features))
           exp = sorted(zip(used_features, m.coef_),
                            key=lambda x: np.abs(x[1]), reverse=True)
           temp, mask = self.get_temp_and_mask(label, segments, image, exp, positive_only=False, 
