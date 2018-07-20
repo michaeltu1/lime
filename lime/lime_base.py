@@ -172,11 +172,6 @@ class LimeBase(object):
 
         self.model = easy_model
 
-        print("easy_model.coef_: " + str(easy_model.coef_))
-        print("easy_model.coef_.shape: " + str(easy_model.coef_.shape))
-        print("used_features: " + str(used_features))
-        print("used_features.shape: " + str(used_features.shape))
-
         if self.verbose:
             print('Intercept', easy_model.intercept_)
             print('Prediction_local', local_pred,)
