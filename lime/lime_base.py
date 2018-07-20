@@ -193,6 +193,8 @@ class LimeBase(object):
                                      model_regressor=None):
 
       weights = self.kernel_fn(distances)
+      print("weights.shape: " + str(weights.shape))
+      print("neighborhood_data.shape: " + str(neighborhood_data.shape))
 
       num_samples = neighborhood_data.shape[0]
       easy_models, prediction_scores, local_preds, temps_masks = [], [], [], []
@@ -203,6 +205,7 @@ class LimeBase(object):
                                              weights,
                                              num_features,
                                              feature_selection)
+      print("used_features.shape: " + str(used_features.shape))
 
       for i in range(num_samples):
           n_data = neighborhood_data[0 : (i + 1) * 10, used_features]
