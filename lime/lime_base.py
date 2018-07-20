@@ -172,6 +172,11 @@ class LimeBase(object):
 
         self.model = easy_model
 
+        print("m.coef_: " + str(m.coef_))
+        print("m.coef_.shape: " + str(m.coef_.shape))
+        print("used_features: " + str(used_features))
+        print("used_features.shape: " + str(used_features.shape))
+
         if self.verbose:
             print('Intercept', easy_model.intercept_)
             print('Prediction_local', local_pred,)
@@ -223,7 +228,10 @@ class LimeBase(object):
           local_preds.append(_local_pred)
 
           print("m.coef_: " + str(m.coef_))
+          print("m.coef_.shape: " + str(m.coef_.shape))
           print("used_features: " + str(used_features))
+          print("used_features.shape: " + str(used_features.shape))
+
           exp = sorted(zip(used_features, m.coef_),
                            key=lambda x: np.abs(x[1]), reverse=True)
           temp, mask = self.get_temp_and_mask(label, segments, image, exp, positive_only=False, 
