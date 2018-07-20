@@ -131,7 +131,8 @@ class LimeImageExplainer(object):
                          segmentation_fn=None,
                          distance_metric='cosine',
                          model_regressor=None,
-                         random_seed=None):
+                         random_seed=None,
+                         trace=False):
         """Generates explanations for a prediction.
 
         First, we generate neighborhood data by randomly perturbing features
@@ -216,6 +217,12 @@ class LimeImageExplainer(object):
                 data, labels, distances, label, num_features,
                 model_regressor=model_regressor,
                 feature_selection=self.feature_selection)
+
+            if trace:
+                print("\nlabel:      " + str(label))
+                print("score:      " + str(score))
+                print("local_pred: " + str(local_pred))
+
         return ret_exp
 
     def explain_instance_2(self, image, classifier_fn, labels=(1,),
