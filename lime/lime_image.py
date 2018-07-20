@@ -220,8 +220,8 @@ class LimeImageExplainer(object):
 
             if trace:
                 print("\nlabel:      " + str(label))
-                print("score:      " + str(score))
-                print("local_pred: " + str(local_pred))
+                print("score:      " + str(ret_exp.score))
+                print("local_pred: " + str(ret_exp.local_pred))
 
         return ret_exp
 
