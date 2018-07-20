@@ -222,7 +222,7 @@ class LimeBase(object):
           _local_pred = m.predict(neighborhood_data[0, used_features].reshape(1, -1))
           local_preds.append(_local_pred)
 
-	  print("m.coef_: " + str(m.coef_))
+          print("m.coef_: " + str(m.coef_))
           print("used_features: " + str(used_features))
           exp = sorted(zip(used_features, m.coef_),
                            key=lambda x: np.abs(x[1]), reverse=True)
