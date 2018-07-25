@@ -360,9 +360,6 @@ class LimeImageExplainer(object):
         labels = []
         data[0, :] = 1
         imgs = []
-        stop_top = time.time()
-        t_diff = stop_top - _start
-        print("data_labels neighborhood generation ran for {} seconds ({} minutes)".format(round(t_diff, 3), round(t_diff / 60, 3)))
         for row in data:
             ost = time.time()
             temp = copy.deepcopy(image)
