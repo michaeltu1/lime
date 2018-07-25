@@ -355,7 +355,6 @@ class LimeImageExplainer(object):
                 labels: prediction probabilities matrix
         """
         function_timer = TimerStat()
-        loop_timer = TimerStat()        
 
         with function_timer:
             n_features = np.unique(segments).shape[0]
@@ -366,6 +365,7 @@ class LimeImageExplainer(object):
             imgs = []
         
             for row in data:
+                loop_timer = TimerStat()
                 with loop_timer:
                     temp = copy.deepcopy(image)
                     zeros = np.where(row == 0)[0]
@@ -378,7 +378,9 @@ class LimeImageExplainer(object):
                         preds = classifier_fn(np.array(imgs))
                         labels.extend(preds)
                         imgs = []
+                print("Time per loop: {} seconds ({} minutes)".format(round(loop_timer._total_time, 3), round(loop_timer._total_time / 60, 3)))                
             if len(imgs) > 0:
                 preds = classifier_fn(np.array(imgs))
                 labels.extend(preds)
+        print("data_labels function ran for {} seconds ({} minutes)".format(round(function_timer._total_time, 3), round(function_timer.total_time / 60, 3)))
         return data, np.array(labels)
