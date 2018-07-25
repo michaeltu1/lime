@@ -354,7 +354,7 @@ class LimeImageExplainer(object):
                 data: dense num_samples * num_superpixels
                 labels: prediction probabilities matrix
         """
-	function_timer = TimerStat()
+        function_timer = TimerStat()
         loop_timer = TimerStat()        
 
         with function_timer:
