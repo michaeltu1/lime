@@ -6,6 +6,7 @@ import numpy as np
 import time
 from sklearn.linear_model import Ridge, lars_path
 from sklearn.utils import check_random_state
+from ray.rllib.utils.timer import TimerStat
 
 
 class LimeBase(object):
@@ -149,38 +150,38 @@ class LimeBase(object):
             by decreasing absolute value of y.
             score is the R^2 value of the returned explanation
         """
-        _method_start = time.time()
-        
         weights = self.kernel_fn(distances)
 
-        labels_column = neighborhood_labels[:, label]
-        used_features = self.feature_selection(neighborhood_data,
-                                               labels_column,
-                                               weights,
-                                               num_features,
-                                               feature_selection)
+        feature_timer = TimerStat()
+        with feature_timer:
+            labels_column = neighborhood_labels[:, label]
+            used_features = self.feature_selection(neighborhood_data,
+                                                   labels_column,
+                                                   weights,
+                                                   num_features,
+                                                   feature_selection)
+        print("Feature Selection takes {} seconds ({} minutes)".format(round(feature_timer._total_time, 3), round(feature_timer._total_time / 60, 3)))
+        
+        ridge_timer = TimerStat()
+        with ridge_timer:
+            if model_regressor is None:
+                model_regressor = Ridge(alpha=1, fit_intercept=True,
+                                        random_state=self.random_state)
+            easy_model = model_regressor
+            easy_model.fit(neighborhood_data[:, used_features],
+                           labels_column, sample_weight=weights)
+        print("Fitting Ridge Regression takes {} seconds ({} minutes)".format(round(ridge_timer._total_time, 3), round(ridge_timer._total_time / 60, 3)))
+        
+        pred_timer = TimerStat()
+        with pred_timer:
+            prediction_score = easy_model.score(
+                neighborhood_data[:, used_features],
+                labels_column, sample_weight=weights)
 
-        if model_regressor is None:
-            model_regressor = Ridge(alpha=1, fit_intercept=True,
-                                    random_state=self.random_state)
-        easy_model = model_regressor
-        _fit_start = time.time()
-        easy_model.fit(neighborhood_data[:, used_features],
-                       labels_column, sample_weight=weights)
-        _fit_end = time.time()
-        _diff = _fit_end - _fit_start
-        print("easy_model.fit ran for {} seconds ({} minutes)".format(round(_diff, 3), round(_diff / 60, 3)))
-        prediction_score = easy_model.score(
-            neighborhood_data[:, used_features],
-            labels_column, sample_weight=weights)
-
-        local_pred = easy_model.predict(neighborhood_data[0, used_features].reshape(1, -1))
+            local_pred = easy_model.predict(neighborhood_data[0, used_features].reshape(1, -1))
+        print("Prediction takes {} seconds ({} minutes)".format(round(pred_timer._total_time, 3), round(pred_timer._total_time / 60, 3)))
 
         self.model = easy_model
-        
-        _method_end = time.time()
-        _diff = _method_end - _method_start
-        print("Explain_instance_with_data ran for {} seconds ({} minutes)".format(round(_diff, 3), round(_diff / 60, 3)))
         
         if self.verbose:
             print('Intercept', easy_model.intercept_)
