@@ -368,7 +368,7 @@ class LimeImageExplainer(object):
             temp = copy.deepcopy(image)
             e = time.time()
             c_diff = e - ost
-            print("deepcopy ran for {} seconds ({} minutes)".format(round(_diff, 3), round(_diff / 60, 3)))
+            print("deepcopy ran for {} seconds ({} minutes)".format(round(c_diff, 3), round(c_diff / 60, 3)))
             zeros = np.where(row == 0)[0]
             mask = np.zeros(segments.shape).astype(bool)
             for z in zeros:
