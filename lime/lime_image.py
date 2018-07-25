@@ -2,6 +2,7 @@
 Functions for explaining classifiers that use Image data.
 """
 import copy
+import time
 
 import numpy as np
 import sklearn
