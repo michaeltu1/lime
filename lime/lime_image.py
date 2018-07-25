@@ -360,8 +360,15 @@ class LimeImageExplainer(object):
         labels = []
         data[0, :] = 1
         imgs = []
+        stop_top = time.time()
+        t_diff = stop_top - _start
+        print("data_labels neighborhood generation ran for {} seconds ({} minutes)".format(round(t_diff, 3), round(t_diff / 60, 3)))
         for row in data:
+            ost = time.time()
             temp = copy.deepcopy(image)
+            e = time.time()
+            c_diff = e - ost
+            print("deepcopy ran for {} seconds ({} minutes)".format(round(_diff, 3), round(_diff / 60, 3)))
             zeros = np.where(row == 0)[0]
             mask = np.zeros(segments.shape).astype(bool)
             for z in zeros:
@@ -372,6 +379,9 @@ class LimeImageExplainer(object):
                 preds = classifier_fn(np.array(imgs))
                 labels.extend(preds)
                 imgs = []
+            ed = time.time()
+            dif = ed - ost
+            print("1 for loop iter ran for {} seconds ({} minutes)".format(round(dif, 3), round(dif / 60, 3)))
         if len(imgs) > 0:
             preds = classifier_fn(np.array(imgs))
             labels.extend(preds)
