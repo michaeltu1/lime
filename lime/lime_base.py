@@ -3,6 +3,7 @@ Contains abstract functionality for learning locally linear sparse model.
 """
 from __future__ import print_function
 import numpy as np
+import time
 from sklearn.linear_model import Ridge, lars_path
 from sklearn.utils import check_random_state
 
@@ -148,7 +149,8 @@ class LimeBase(object):
             by decreasing absolute value of y.
             score is the R^2 value of the returned explanation
         """
-
+        _method_start = time.time()
+        
         weights = self.kernel_fn(distances)
 
         labels_column = neighborhood_labels[:, label]
@@ -162,8 +164,12 @@ class LimeBase(object):
             model_regressor = Ridge(alpha=1, fit_intercept=True,
                                     random_state=self.random_state)
         easy_model = model_regressor
+        _fit_start = time.time()
         easy_model.fit(neighborhood_data[:, used_features],
                        labels_column, sample_weight=weights)
+        _fit_end = time.time()
+        _diff = _fit_end - _fit_start
+        print("easy_model.fit ran for {} seconds ({} minutes)".format(round(_diff, 3), round(_diff / 60, 3)))
         prediction_score = easy_model.score(
             neighborhood_data[:, used_features],
             labels_column, sample_weight=weights)
@@ -171,7 +177,11 @@ class LimeBase(object):
         local_pred = easy_model.predict(neighborhood_data[0, used_features].reshape(1, -1))
 
         self.model = easy_model
-
+        
+        _method_end = time.time()
+        _diff = _method_end - _method_start
+        print("Explain_instance_with_data ran for {} seconds ({} minutes)".format(round(_diff, 3), round(_diff / 60, 3)))
+        
         if self.verbose:
             print('Intercept', easy_model.intercept_)
             print('Prediction_local', local_pred,)
