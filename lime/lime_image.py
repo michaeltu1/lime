@@ -382,5 +382,5 @@ class LimeImageExplainer(object):
             if len(imgs) > 0:
                 preds = classifier_fn(np.array(imgs))
                 labels.extend(preds)
-        print("data_labels function ran for {} seconds ({} minutes)".format(round(function_timer._total_time, 3), round(function_timer.total_time / 60, 3)))
+        print("data_labels function ran for {} seconds ({} minutes)".format(round(function_timer._total_time, 3), round(function_timer._total_time / 60, 3)))
         return data, np.array(labels)
