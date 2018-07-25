@@ -352,6 +352,7 @@ class LimeImageExplainer(object):
                 data: dense num_samples * num_superpixels
                 labels: prediction probabilities matrix
         """
+        _start = time.time()
         n_features = np.unique(segments).shape[0]
         data = self.random_state.randint(0, 2, num_samples * n_features)\
             .reshape((num_samples, n_features))
@@ -373,4 +374,7 @@ class LimeImageExplainer(object):
         if len(imgs) > 0:
             preds = classifier_fn(np.array(imgs))
             labels.extend(preds)
+        _end = time.time()
+        _diff = _end - _start
+        print("data_labels neighborhood generation ran for {} seconds ({} minutes)".format(round(_diff, 3), round(_diff / 60, 3)))
         return data, np.array(labels)
