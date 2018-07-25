@@ -363,9 +363,6 @@ class LimeImageExplainer(object):
         for row in data:
             ost = time.time()
             temp = copy.deepcopy(image)
-            e = time.time()
-            c_diff = e - ost
-            print("deepcopy ran for {} seconds ({} minutes)".format(round(c_diff, 3), round(c_diff / 60, 3)))
             zeros = np.where(row == 0)[0]
             mask = np.zeros(segments.shape).astype(bool)
             for z in zeros:
@@ -378,7 +375,7 @@ class LimeImageExplainer(object):
                 imgs = []
             ed = time.time()
             dif = ed - ost
-            print("1 for loop iter ran for {} seconds ({} minutes)".format(round(dif, 3), round(dif / 60, 3)))
+            print("  1 for loop iter ran for {} seconds ({} minutes)".format(round(dif, 3), round(dif / 60, 3)))
         if len(imgs) > 0:
             preds = classifier_fn(np.array(imgs))
             labels.extend(preds)
