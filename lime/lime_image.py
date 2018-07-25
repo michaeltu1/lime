@@ -9,6 +9,7 @@ import sklearn
 import sklearn.preprocessing
 from sklearn.utils import check_random_state
 from skimage.color import gray2rgb
+from ray.rllib.utils.timer import TimerStat
 
 from . import lime_base
 from .wrappers.scikit_image import SegmentationAlgorithm
@@ -353,33 +354,31 @@ class LimeImageExplainer(object):
                 data: dense num_samples * num_superpixels
                 labels: prediction probabilities matrix
         """
-        _start = time.time()
-        n_features = np.unique(segments).shape[0]
-        data = self.random_state.randint(0, 2, num_samples * n_features)\
-            .reshape((num_samples, n_features))
-        labels = []
-        data[0, :] = 1
-        imgs = []
-        for row in data:
-            ost = time.time()
-            temp = copy.deepcopy(image)
-            zeros = np.where(row == 0)[0]
-            mask = np.zeros(segments.shape).astype(bool)
-            for z in zeros:
-                mask[segments == z] = True
-            temp[mask] = fudged_image[mask]
-            imgs.append(temp)
-            if len(imgs) == batch_size:
+	function_timer = TimerStat()
+        loop_timer = TimerStat()        
+
+        with function_timer:
+            n_features = np.unique(segments).shape[0]
+            data = self.random_state.randint(0, 2, num_samples * n_features)\
+                .reshape((num_samples, n_features))
+            labels = []
+            data[0, :] = 1
+            imgs = []
+        
+            for row in data:
+                with loop_timer:
+                    temp = copy.deepcopy(image)
+                    zeros = np.where(row == 0)[0]
+                    mask = np.zeros(segments.shape).astype(bool)
+                    for z in zeros:
+                        mask[segments == z] = True
+                    temp[mask] = fudged_image[mask]
+                    imgs.append(temp)
+                    if len(imgs) == batch_size:
+                        preds = classifier_fn(np.array(imgs))
+                        labels.extend(preds)
+                        imgs = []
+            if len(imgs) > 0:
                 preds = classifier_fn(np.array(imgs))
                 labels.extend(preds)
-                imgs = []
-            ed = time.time()
-            dif = ed - ost
-            print("  1 for loop iter ran for {} seconds ({} minutes)".format(round(dif, 3), round(dif / 60, 3)))
-        if len(imgs) > 0:
-            preds = classifier_fn(np.array(imgs))
-            labels.extend(preds)
-        _end = time.time()
-        _diff = _end - _start
-        print("data_labels neighborhood generation ran for {} seconds ({} minutes)".format(round(_diff, 3), round(_diff / 60, 3)))
         return data, np.array(labels)
