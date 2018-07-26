@@ -342,7 +342,7 @@ class LimeImageExplainer(object):
                     classifier_fn,
                     num_samples,
                     batch_size=10,
-                    timed=False
+                    timed=False,
                     time_classification=False):
         """Generates images and predictions in the neighborhood of this image.
 
