@@ -135,7 +135,8 @@ class LimeImageExplainer(object):
                          model_regressor=None,
                          random_seed=None,
                          trace=False,
-                         timed=False):
+                         timed=False,
+                         time_classification=False):
         """Generates explanations for a prediction.
 
         First, we generate neighborhood data by randomly perturbing features
@@ -201,7 +202,8 @@ class LimeImageExplainer(object):
         data, labels = self.data_labels(image, fudged_image, segments,
                                         classifier_fn, num_samples,
                                         batch_size=batch_size,
-                                        timed=timed)
+                                        timed=timed,
+                                        time_classification=time_classification)
 
         distances = sklearn.metrics.pairwise_distances(
             data,
@@ -340,7 +342,8 @@ class LimeImageExplainer(object):
                     classifier_fn,
                     num_samples,
                     batch_size=10,
-                    timed=False):
+                    timed=False
+                    time_classification):
         """Generates images and predictions in the neighborhood of this image.
 
         Args:
@@ -379,7 +382,11 @@ class LimeImageExplainer(object):
                     temp[mask] = fudged_image[mask]
                     imgs.append(temp)
                     if len(imgs) == batch_size:
+                        s = time.time()
                         preds = classifier_fn(np.array(imgs))
+                        d = time.time() - s
+                        if time_classification:
+                            print("Classification time: " + str(d))
                         labels.extend(preds)
                         imgs = []
                     if timed:
