@@ -115,7 +115,8 @@ class LimeBase(object):
                                    label,
                                    num_features,
                                    feature_selection='auto',
-                                   model_regressor=None):
+                                   model_regressor=None,
+                                   timed=False):
         """Takes perturbed data, labels and distances, returns explanation.
 
         Args:
@@ -160,7 +161,8 @@ class LimeBase(object):
                                                    weights,
                                                    num_features,
                                                    feature_selection)
-        print("Feature Selection takes {} seconds ({} minutes)".format(round(feature_timer._total_time, 3), round(feature_timer._total_time / 60, 3)))
+        if timed:
+            print("Feature Selection takes {} seconds ({} minutes)".format(round(feature_timer._total_time, 3), round(feature_timer._total_time / 60, 3)))
         
         ridge_timer = TimerStat()
         with ridge_timer:
@@ -170,7 +172,8 @@ class LimeBase(object):
             easy_model = model_regressor
             easy_model.fit(neighborhood_data[:, used_features],
                            labels_column, sample_weight=weights)
-        print("Fitting Ridge Regression takes {} seconds ({} minutes)".format(round(ridge_timer._total_time, 3), round(ridge_timer._total_time / 60, 3)))
+        if timed:
+            print("Fitting Ridge Regression takes {} seconds ({} minutes)".format(round(ridge_timer._total_time, 3), round(ridge_timer._total_time / 60, 3)))
         
         pred_timer = TimerStat()
         with pred_timer:
@@ -179,7 +182,8 @@ class LimeBase(object):
                 labels_column, sample_weight=weights)
 
             local_pred = easy_model.predict(neighborhood_data[0, used_features].reshape(1, -1))
-        print("Prediction takes {} seconds ({} minutes)".format(round(pred_timer._total_time, 3), round(pred_timer._total_time / 60, 3)))
+        if timed:
+            print("Prediction takes {} seconds ({} minutes)".format(round(pred_timer._total_time, 3), round(pred_timer._total_time / 60, 3)))
 
         self.model = easy_model
         
