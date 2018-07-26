@@ -134,7 +134,8 @@ class LimeImageExplainer(object):
                          distance_metric='cosine',
                          model_regressor=None,
                          random_seed=None,
-                         trace=False):
+                         trace=False,
+                         timed=False):
         """Generates explanations for a prediction.
 
         First, we generate neighborhood data by randomly perturbing features
@@ -199,7 +200,8 @@ class LimeImageExplainer(object):
 
         data, labels = self.data_labels(image, fudged_image, segments,
                                         classifier_fn, num_samples,
-                                        batch_size=batch_size)
+                                        batch_size=batch_size,
+                                        timed=timed)
 
         distances = sklearn.metrics.pairwise_distances(
             data,
@@ -220,7 +222,8 @@ class LimeImageExplainer(object):
              ret_exp.score, ret_exp.local_pred) = self.base.explain_instance_with_data(
                 data, labels, distances, label, num_features,
                 model_regressor=model_regressor,
-                feature_selection=self.feature_selection)
+                feature_selection=self.feature_selection,
+                timed=timed)
 
             if trace:
                 _trace = [str(ret_exp.local_pred), round(ret_exp.score, 8)] + _trace
@@ -336,7 +339,8 @@ class LimeImageExplainer(object):
                     segments,
                     classifier_fn,
                     num_samples,
-                    batch_size=10):
+                    batch_size=10,
+                    timed=False):
         """Generates images and predictions in the neighborhood of this image.
 
         Args:
@@ -378,9 +382,11 @@ class LimeImageExplainer(object):
                         preds = classifier_fn(np.array(imgs))
                         labels.extend(preds)
                         imgs = []
-                print("Time per loop: {} seconds ({} minutes)".format(round(loop_timer._total_time, 3), round(loop_timer._total_time / 60, 3)))                
+                    if timed:
+                        print("Time per loop: {} seconds ({} minutes)".format(round(loop_timer._total_time, 3), round(loop_timer._total_time / 60, 3)))                
             if len(imgs) > 0:
                 preds = classifier_fn(np.array(imgs))
                 labels.extend(preds)
-        print("data_labels function ran for {} seconds ({} minutes)".format(round(function_timer._total_time, 3), round(function_timer._total_time / 60, 3)))
+        if timed:
+            print("data_labels function ran for {} seconds ({} minutes)".format(round(function_timer._total_time, 3), round(function_timer._total_time / 60, 3)))
         return data, np.array(labels)
