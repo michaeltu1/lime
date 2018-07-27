@@ -125,6 +125,10 @@ class LimeImageExplainer(object):
         self.data = None
         self.labels = None
         self.top = None
+        
+        self.times = {"Bernoulli Sampling Time":            [],
+                      "Perturbed Data Point Creation Time": [],
+                      "Classification Time":                []}
 
     def explain_instance(self, image, classifier_fn, labels=(1,),
                          hide_color=None,
@@ -361,39 +365,44 @@ class LimeImageExplainer(object):
                 data: dense num_samples * num_superpixels
                 labels: prediction probabilities matrix
         """
-        function_timer = TimerStat()
+        st = time.time()
+        n_features = np.unique(segments).shape[0]
+        data = self.random_state.randint(0, 2, num_samples * n_features)\
+            .reshape((num_samples, n_features))
+        self.times["Bernoulli Sampling Time"].append(time.time() - st)
+        labels = []
+        data[0, :] = 1
+        imgs = []
 
-        with function_timer:
-            n_features = np.unique(segments).shape[0]
-            data = self.random_state.randint(0, 2, num_samples * n_features)\
-                .reshape((num_samples, n_features))
-            labels = []
-            data[0, :] = 1
-            imgs = []
-        
-            for row in data:
-                loop_timer = TimerStat()
-                with loop_timer:
-                    temp = copy.deepcopy(image)
-                    zeros = np.where(row == 0)[0]
-                    mask = np.zeros(segments.shape).astype(bool)
-                    for z in zeros:
-                        mask[segments == z] = True
-                    temp[mask] = fudged_image[mask]
-                    imgs.append(temp)
-                    if len(imgs) == batch_size:
-                        s = time.time()
-                        preds = classifier_fn(np.array(imgs))
-                        d = time.time() - s
-                        if time_classification:
-                            print("Classification time: " + str(d))
-                        labels.extend(preds)
-                        imgs = []
-                    if timed:
-                        print("Time per loop: {} seconds ({} minutes)".format(round(loop_timer._total_time, 3), round(loop_timer._total_time / 60, 3)))                
-            if len(imgs) > 0:
+        for row in data:
+            s = time.time()
+            temp = copy.deepcopy(image)
+            zeros = np.where(row == 0)[0]
+            mask = np.zeros(segments.shape).astype(bool)
+            for z in zeros:
+                mask[segments == z] = True
+            temp[mask] = fudged_image[mask]
+            imgs.append(temp)
+            self.times["Perturbed Data Point Creation Time"].append(time.time() - s)
+            if len(imgs) == batch_size:
+                s = time.time()
                 preds = classifier_fn(np.array(imgs))
+                self.times["Classification Time"].append(time.time() - s)
                 labels.extend(preds)
+                imgs = []           
+        if len(imgs) > 0:
+            s = time.time()
+            preds = classifier_fn(np.array(imgs))
+            self.times["Classification Time"].append(time.time() - s)
+            labels.extend(preds)
+        if time_classification:
+            print("Average Classification Time: {} seconds".format(np.mean(self.times["Classification Time"])))
         if timed:
-            print("data_labels function ran for {} seconds ({} minutes)".format(round(function_timer._total_time, 3), round(function_timer._total_time / 60, 3)))
+            avg_data_time = np.mean(self.times["Perturbed Data Point Creation Time"])
+            avg_classification_time = np.mean(self.times["Classification Time"])
+            print("Bernoulli Sampling Time: {} seconds".format(np.mean(self.times["Bernoulli Sampling Time"])))
+            print("Average Perturbed Data Point Creation Time: {} seconds".format(avg_data_time))
+            print("Average Classification Time: {} seconds".format(avg_classification_time))
+            print("Average Time per loop: {} seconds".format(avg_data_time + avg_classification_time))
+            print("data_labels function ran for {} seconds".format(time.time() - st))
         return data, np.array(labels)
