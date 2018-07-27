@@ -29,6 +29,10 @@ class LimeBase(object):
         self.verbose = verbose
         self.random_state = check_random_state(random_state)
         self.model = None
+        
+        self.times = {"Feature Selection Time": [],
+                      "Ridge Regression Time":  [],
+                      "Prediction Time":        []}
 
     @staticmethod
     def generate_lars_path(weighted_data, weighted_labels):
@@ -151,41 +155,40 @@ class LimeBase(object):
             by decreasing absolute value of y.
             score is the R^2 value of the returned explanation
         """
+        st = time.time()
         weights = self.kernel_fn(distances)
 
-        feature_timer = TimerStat()
-        with feature_timer:
-            labels_column = neighborhood_labels[:, label]
-            used_features = self.feature_selection(neighborhood_data,
-                                                   labels_column,
-                                                   weights,
-                                                   num_features,
-                                                   feature_selection)
-        if timed:
-            print("Feature Selection takes {} seconds ({} minutes)".format(round(feature_timer._total_time, 3), round(feature_timer._total_time / 60, 3)))
+        labels_column = neighborhood_labels[:, label]
+        used_features = self.feature_selection(neighborhood_data,
+                                               labels_column,
+                                               weights,
+                                               num_features,
+                                               feature_selection)           
+        self.times["Feature Selection Time"].append(time.time() - st)
         
-        ridge_timer = TimerStat()
-        with ridge_timer:
-            if model_regressor is None:
-                model_regressor = Ridge(alpha=1, fit_intercept=True,
-                                        random_state=self.random_state)
-            easy_model = model_regressor
-            easy_model.fit(neighborhood_data[:, used_features],
-                           labels_column, sample_weight=weights)
-        if timed:
-            print("Fitting Ridge Regression takes {} seconds ({} minutes)".format(round(ridge_timer._total_time, 3), round(ridge_timer._total_time / 60, 3)))
+        s = time.time()
+        if model_regressor is None:
+            model_regressor = Ridge(alpha=1, fit_intercept=True,
+                                    random_state=self.random_state)
+        easy_model = model_regressor
+        easy_model.fit(neighborhood_data[:, used_features],
+                       labels_column, sample_weight=weights)
+        self.times["Ridge Regression Time"].append(time.time() - s)
         
-        pred_timer = TimerStat()
-        with pred_timer:
-            prediction_score = easy_model.score(
-                neighborhood_data[:, used_features],
-                labels_column, sample_weight=weights)
+        s = time.time()
+        prediction_score = easy_model.score(
+            neighborhood_data[:, used_features],
+            labels_column, sample_weight=weights)
 
-            local_pred = easy_model.predict(neighborhood_data[0, used_features].reshape(1, -1))
-        if timed:
-            print("Prediction takes {} seconds ({} minutes)".format(round(pred_timer._total_time, 3), round(pred_timer._total_time / 60, 3)))
+        local_pred = easy_model.predict(neighborhood_data[0, used_features].reshape(1, -1))
+        self.times["Prediction Time"].append(time.time() - s)
 
         self.model = easy_model
+        
+        if timed:
+            print("Feature Selection Time: {} seconds".format(np.mean(self.times["Feature Selection Time"])))
+            print("Ridge Regression Time: {} seconds".format(np.mean(self.times["Ridge Regression Time"])))
+            print("Prediction Time: {} seconds".format(np.mean(self.times["Prediction Time"])))
         
         if self.verbose:
             print('Intercept', easy_model.intercept_)
