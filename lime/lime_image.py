@@ -403,6 +403,6 @@ class LimeImageExplainer(object):
             print("Bernoulli Sampling Time: {} seconds".format(np.mean(self.times["Bernoulli Sampling Time"])))
             print("Average Perturbed Data Point Creation Time: {} seconds".format(avg_data_time))
             print("Average Classification Time: {} seconds".format(avg_classification_time))
-            print("Average Time per loop: {} seconds".format(avg_data_time + avg_classification_time))
-            print("data_labels function ran for {} seconds".format(time.time() - st))
+            print("Average Time per Loop: {} seconds".format((avg_data_time + avg_classification_time) / data.shape[0]))
+            print("data_labels Function: {} seconds".format(time.time() - st))
         return data, np.array(labels)
