@@ -354,7 +354,7 @@ class EpsilonGreedyDataLabels(object):
         self.image = image
         self.fudged_image = fudged_image
         self.segments = segments
-        self.gt_pred = classifier_fn(image)
+        self.gt_pred = classifier_fn([image])
         self.classifier_fn = classifier_fn
         self.num_superpixels = num_superpixels or num_features
         self.num_features = num_features
