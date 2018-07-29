@@ -212,7 +212,7 @@ class LimeImageExplainer(object):
 				                      timed=timed,
 				                      time_classification=time_classification,
 				                      num_features=num_features)
-	        data, labels = bandit.perturbed_data, bandit.perturbed_labels
+	    data, labels = bandit.perturbed_data, bandit.perturbed_labels
     	    features_to_use = bandit.features
         else:
     	    data, labels = self.data_labels(image, fudged_image, segments,
