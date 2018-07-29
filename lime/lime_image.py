@@ -212,14 +212,14 @@ class LimeImageExplainer(object):
 				                      timed=timed,
 				                      time_classification=time_classification,
 				                      num_features=num_features)
-	    data, labels = bandit.perturbed_data, bandit.perturbed_labels
-    	    features_to_use = bandit.features
+            data, labels = bandit.perturbed_data, bandit.perturbed_labels
+            features_to_use = bandit.features
         else:
-    	    data, labels = self.data_labels(image, fudged_image, segments,
-	                			            classifier_fn, num_samples,
-		    	                            batch_size=batch_size,
-			    	                        timed=timed,
-				                            time_classification=time_classification)
+            data, labels = self.data_labels(image, fudged_image, segments,
+                                            classifier_fn, num_samples,
+          	                            batch_size=batch_size,
+               	                            timed=timed,
+                                            time_classification=time_classification)
 
         distances = sklearn.metrics.pairwise_distances(
             data,
