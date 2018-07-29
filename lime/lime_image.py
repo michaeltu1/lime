@@ -210,10 +210,11 @@ class LimeImageExplainer(object):
         if use_bandits:
             bandit = self.data_labels(image, fudged_image, segments, 
                                       classifier_fn, num_samples,
-			                          batch_size=batch_size,
-				                      timed=timed,
-				                      time_classification=time_classification,
-				                      num_features=num_features)
+			              batch_size=batch_size,
+				      timed=timed,
+				      time_classification=time_classification,
+				      num_features=num_features,
+                                      use_bandits=True)
             data, labels = bandit.perturbed_data, bandit.perturbed_labels
             features_to_use = bandit.features
         else:
