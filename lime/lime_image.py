@@ -287,10 +287,10 @@ class LimeImageExplainer(object):
         n_features = np.unique(segments).shape[0]
 	
         if use_bandits:
-            bandit = EpsilonGreedyDataLabels(image, fudged_image, segments,
-			                    		     classifier_fn, n_features, 
-		                    			     num_features, num_samples, epsilon)
-	        return bandit
+            bandit = EpsilonGreedyDataLabels(image, fudged_image, segments, 
+                                             classifier_fn, n_features,
+                                             num_features, num_samples, epsilon)
+            return bandit
 	    
 	
         data = self.random_state.randint(0, 2, num_samples * n_features)\
