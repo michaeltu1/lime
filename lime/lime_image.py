@@ -204,22 +204,22 @@ class LimeImageExplainer(object):
 
         top = labels
 
-	features_to_use = None
-	if use_bandits:
-	    bandit = self.data_labels(image, fudged_image, segments,
-		    		      classifier_fn, num_samples,
-			              batch_size=batch_size,
-				      timed=timed,
-				      time_classification=time_classification,
-				      num_features=num_features)
-	    data, labels = bandit.perturbed_data, bandit.perturbed_labels
-	    features_to_use = bandit.features
-	else:
-	    data, labels = self.data_labels(image, fudged_image, segments,
-				            classifier_fn, num_samples,
-			                    batch_size=batch_size,
-				            timed=timed,
-				            time_classification=time_classification)
+        features_to_use = None
+        if use_bandits:
+            bandit = self.data_labels(image, fudged_image, segments, 
+                                      classifier_fn, num_samples,
+			                          batch_size=batch_size,
+				                      timed=timed,
+				                      time_classification=time_classification,
+				                      num_features=num_features)
+	        data, labels = bandit.perturbed_data, bandit.perturbed_labels
+    	    features_to_use = bandit.features
+        else:
+    	    data, labels = self.data_labels(image, fudged_image, segments,
+	                			            classifier_fn, num_samples,
+		    	                            batch_size=batch_size,
+			    	                        timed=timed,
+				                            time_classification=time_classification)
 
         distances = sklearn.metrics.pairwise_distances(
             data,
@@ -283,14 +283,14 @@ class LimeImageExplainer(object):
         """
         st = time.time()
 	
-	# used as num_superpixels
-	n_features = np.unique(segments).shape[0]
+        # used as num_siuperpixels
+        n_features = np.unique(segments).shape[0]
 	
-	if use_bandits:
-	    bandit = EpsilonGreedyDataLabels(image, fudged_image, segments,
-					     classifier_fn, n_features, 
-					     num_features, num_samples, epsilon)
-	    return bandit
+        if use_bandits:
+            bandit = EpsilonGreedyDataLabels(image, fudged_image, segments,
+			                    		     classifier_fn, n_features, 
+		                    			     num_features, num_samples, epsilon)
+	        return bandit
 	    
 	
         data = self.random_state.randint(0, 2, num_samples * n_features)\
