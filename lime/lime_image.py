@@ -141,7 +141,9 @@ class LimeImageExplainer(object):
                          random_seed=None,
                          trace=False,
                          timed=False,
-                         time_classification=False):
+                         time_classification=False,
+                         use_bandits=False):
+
         """Generates explanations for a prediction.
 
         First, we generate neighborhood data by randomly perturbing features
