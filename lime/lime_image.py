@@ -3,6 +3,7 @@ Functions for explaining classifiers that use Image data.
 """
 import copy
 import time
+import itertools
 
 import numpy as np
 import sklearn
@@ -406,3 +407,101 @@ class LimeImageExplainer(object):
             print("Average Time per loop: {} seconds".format(avg_data_time + avg_classification_time))
             print("data_labels function ran for {} seconds".format(time.time() - st))
         return data, np.array(labels)
+
+
+class EpsilonGreedyDataLabels(object):
+    """
+    Replace feature selection + neighborhood data generation
+    """
+    def __init__(self, image, fudged_image, segments, gt_pred, classifier_fn, num_superpixels, num_features, num_samples, epsilon):
+        """
+        gt_pred: ground truth prediction made by the original model
+        classifier_fn: classifier function of the original model
+        num_superpixels: number of superpixels in the image
+        num_features: number of most impactful superpixels asked for
+        num_samples: number of data points to generate using epsilon greedy exploration
+                     (used internally to determine superpixels to use, not actual neighborhood data)
+        epsilon: constant influencing the amount of exploration vs. exploitation
+        """
+        self.image = image
+        self.fudged_image = fudged_image
+        self.segments = segments
+        self.gt_pred = gt_pred
+        self.classifier_fn = classifier_fn
+        self.num_superpixels = num_superpixels
+        self.num_features = num_features
+        self.num_samples = num_samples
+        self.epsilon = epsilon
+        self.eps_greedy_data = []
+        self.eps_greedy_imgs = []
+        self.eps_greedy_preds = None
+        self.rewards = np.array([0] * num_superpixels)
+        self.counts = np.array([0.001] * num_superpixels)
+        self.q_vals = None
+        self.perturbed_data = []
+        self.perturbed_labels = []
+        self.features = []
+
+    # Used internally to decide how to generate the neighborhood
+    def generate_data(self):
+        for __ in self.num_samples:
+            self.eps_greedy_data.append(np.array([0 for _ in self.num_superpixels if np.random.random < self.epsilon else 1]))
+        self.eps_greedy_data = np.array(data)
+
+	for i in self.eps_greedy_data.shape[0]:
+            arr = self.eps_greedy_data[i]
+            temp = copy.deepcopy(self.image)
+            zeros = np.where(arr == 0)[0]
+            mask = np.zeros(self.segments.shape).astype(bool)
+            for z in zeros:
+                mask[self.segments == z] = True
+            temp[mask] = self.fudged_image[mask]
+            self.eps_greedy_imgs.append(temp)
+
+
+    # Creates returned neighborhood data
+    def generate_neighborhood_and_labels(self):
+        arrangements = []
+        binary_permutations = list(map(int, ["".join(seq) for seq in itertools.product("01", repeat=self.num_features)]))
+        for bp in binary_permutations:
+            sample = np.array([1] * self.num_superpixels)
+            for i in range(self.num_features):
+                if bp[i] == "0":
+                    sample[self.features[i]] = 0
+            arrangements.append(sample)
+
+        for arr in arrangements:
+            temp = copy.deepcopy(self.image)
+            zeros = np.where(arr == 0)[0]
+            mask = np.zeros(self.segments.shape).astype(bool)
+            for z in zeros:
+                mask[self.segments == z] = True
+            temp[mask] = self.fudged_image[mask]
+            self.perturbed_data.append(temp)
+
+        self.perturbed_labels = self.classifier_fn(self.perturbed_data)
+
+    # Should vectorize this at some point
+    def run_sample(self, sample, eps_greedy_pred):
+        if self.gt_pred == eps_greedy_pred:
+            self.rewards[np.where(sample == 1)] += 1
+        # else:
+            # self.rewards[np.where(sample != 1)] += 1
+
+    def run(self):
+        self.generate_data()
+        self.eps_greedy_preds = self.classifier_fn(self.eps_greedy_imgs)
+
+        for i in range(self.num_samples):
+            sample = self.eps_greedy_data[i]
+            perturbed_pred = self.eps_greedy_preds[i]
+            self.counts[np.where(sample == 1)] += 1
+            self.run_sample(sample, eps_greedy_pred)
+
+        self.q_vals = self.rewards / self.counts
+        self.features = np.argsort(self.q_vals)[-self.num_features]
+        self.generate_neighborhood_and_labels()
+        return self.perturbed_data, self.perturbed_labels
+
+        
+
