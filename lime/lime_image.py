@@ -372,7 +372,7 @@ class EpsilonGreedyDataLabels(object):
     # Used internally to decide how to generate the neighborhood
     def generate_data(self):
         for __ in self.num_samples:
-            self.eps_greedy_data.append(np.array([0 for _ in self.num_superpixels if np.random.random < self.epsilon else 1]))
+            self.eps_greedy_data.append(np.array([0 if np.random.random < self.epsilon else 1 for _ in self.num_superpixels]))
         self.eps_greedy_data = np.array(data)
 
 	for i in self.eps_greedy_data.shape[0]:
