@@ -366,8 +366,8 @@ class EpsilonGreedyDataLabels(object):
         self.perturbed_data = []
         self.perturbed_labels = []
         self.features = []
-	
-	self.run()
+
+        self.run()
 
     # Used internally to decide how to generate the neighborhood
     def generate_data(self):
@@ -390,7 +390,7 @@ class EpsilonGreedyDataLabels(object):
     def generate_neighborhood_and_labels(self):
         arrangements = []
         binary_permutations = list(map(int, ["".join(seq) for seq in itertools.product("01", repeat=self.num_features)]))
-	binary_permutations.reverse()
+        binary_permutations.reverse()
         for bp in binary_permutations:
             sample = np.array([1] * self.num_superpixels)
             for i in range(self.num_features):
