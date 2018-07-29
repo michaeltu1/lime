@@ -204,11 +204,22 @@ class LimeImageExplainer(object):
 
         top = labels
 
-        data, labels = self.data_labels(image, fudged_image, segments,
-                                        classifier_fn, num_samples,
-                                        batch_size=batch_size,
-                                        timed=timed,
-                                        time_classification=time_classification)
+	features_to_use = None
+	if use_bandits:
+	    bandit = self.data_labels(image, fudged_image, segments,
+		    		      classifier_fn, num_samples,
+			              batch_size=batch_size,
+				      timed=timed,
+				      time_classification=time_classification,
+				      num_features=num_features)
+	    data, labels = bandit.perturbed_data, bandit.perturbed_labels
+	    features_to_use = bandit.features
+	else:
+	    data, labels = self.data_labels(image, fudged_image, segments,
+				            classifier_fn, num_samples,
+			                    batch_size=batch_size,
+				            timed=timed,
+				            time_classification=time_classification)
 
         distances = sklearn.metrics.pairwise_distances(
             data,
@@ -230,7 +241,8 @@ class LimeImageExplainer(object):
                 data, labels, distances, label, num_features,
                 model_regressor=model_regressor,
                 feature_selection=self.feature_selection,
-                timed=timed)
+                timed=timed,
+	        used_features=features_to_use)
 
             if trace:
                 _trace = [str(ret_exp.local_pred), round(ret_exp.score, 8)] + _trace
@@ -248,7 +260,10 @@ class LimeImageExplainer(object):
                     num_samples,
                     batch_size=10,
                     timed=False,
-                    time_classification=False):
+                    time_classification=False,
+		    use_bandits=False,
+		    epsilon=.1,
+		    num_features=5):
         """Generates images and predictions in the neighborhood of this image.
 
         Args:
@@ -267,7 +282,17 @@ class LimeImageExplainer(object):
                 labels: prediction probabilities matrix
         """
         st = time.time()
-        n_features = np.unique(segments).shape[0]
+	
+	# used as num_superpixels
+	n_features = np.unique(segments).shape[0]
+	
+	if use_bandits:
+	    bandit = EpsilonGreedyDataLabels(image, fudged_image, segments,
+					     classifier_fn, n_features, 
+					     num_features, num_samples, epsilon)
+	    return bandit
+	    
+	
         data = self.random_state.randint(0, 2, num_samples * n_features)\
             .reshape((num_samples, n_features))
         self.times["Bernoulli Sampling Time"].append(time.time() - st)
@@ -313,7 +338,7 @@ class EpsilonGreedyDataLabels(object):
     """
     Replace feature selection + neighborhood data generation
     """
-    def __init__(self, image, fudged_image, segments, gt_pred, classifier_fn, num_superpixels, num_features, num_samples, epsilon):
+    def __init__(self, image, fudged_image, segments, classifier_fn, num_superpixels, num_features, num_samples, epsilon):
         """
         gt_pred: ground truth prediction made by the original model
         classifier_fn: classifier function of the original model
@@ -326,9 +351,9 @@ class EpsilonGreedyDataLabels(object):
         self.image = image
         self.fudged_image = fudged_image
         self.segments = segments
-        self.gt_pred = gt_pred
+        self.gt_pred = classifier_fn(image)
         self.classifier_fn = classifier_fn
-        self.num_superpixels = num_superpixels
+        self.num_superpixels = num_superpixels or num_features
         self.num_features = num_features
         self.num_samples = num_samples
         self.epsilon = epsilon
@@ -341,6 +366,8 @@ class EpsilonGreedyDataLabels(object):
         self.perturbed_data = []
         self.perturbed_labels = []
         self.features = []
+	
+	self.run()
 
     # Used internally to decide how to generate the neighborhood
     def generate_data(self):
@@ -363,6 +390,7 @@ class EpsilonGreedyDataLabels(object):
     def generate_neighborhood_and_labels(self):
         arrangements = []
         binary_permutations = list(map(int, ["".join(seq) for seq in itertools.product("01", repeat=self.num_features)]))
+	binary_permutations.reverse()
         for bp in binary_permutations:
             sample = np.array([1] * self.num_superpixels)
             for i in range(self.num_features):
