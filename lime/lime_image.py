@@ -375,7 +375,7 @@ class EpsilonGreedyDataLabels(object):
             self.eps_greedy_data.append(np.array([0 if np.random.random < self.epsilon else 1 for _ in self.num_superpixels]))
         self.eps_greedy_data = np.array(data)
 
-	for i in self.eps_greedy_data.shape[0]:
+        for i in self.eps_greedy_data.shape[0]:
             arr = self.eps_greedy_data[i]
             temp = copy.deepcopy(self.image)
             zeros = np.where(arr == 0)[0]
