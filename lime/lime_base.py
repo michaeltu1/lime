@@ -120,7 +120,8 @@ class LimeBase(object):
                                    num_features,
                                    feature_selection='auto',
                                    model_regressor=None,
-                                   timed=False):
+                                   timed=False,
+                                   used_features=None):
         """Takes perturbed data, labels and distances, returns explanation.
 
         Args:
@@ -159,11 +160,13 @@ class LimeBase(object):
         weights = self.kernel_fn(distances)
 
         labels_column = neighborhood_labels[:, label]
-        used_features = self.feature_selection(neighborhood_data,
-                                               labels_column,
-                                               weights,
-                                               num_features,
-                                               feature_selection)           
+        
+        if used_features is None:
+            used_features = self.feature_selection(neighborhood_data,
+                                                   labels_column,
+                                                   weights,
+                                                   num_features,
+                                                   feature_selection)           
         self.times["Feature Selection Time"].append(time.time() - st)
         
         s = time.time()
