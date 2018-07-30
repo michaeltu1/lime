@@ -363,7 +363,7 @@ class EpsilonGreedyDataLabels(object):
         self.eps_greedy_data = []
         self.eps_greedy_imgs = []
         self.eps_greedy_preds = None
-        self.rewards = np.array([0] * num_superpixels)
+        self.rewards = None
         self.counts = np.array([0.001] * num_superpixels)
         self.q_vals = None
         self.arrangements = []
@@ -390,7 +390,6 @@ class EpsilonGreedyDataLabels(object):
             self.eps_greedy_imgs.append(temp)
         self.eps_greedy_imgs = np.array(self.eps_greedy_imgs)
 
-
     # Creates returned neighborhood data
     def generate_neighborhood_and_labels(self):
         binary_permutations = ["".join(seq) for seq in itertools.product("01", repeat=self.num_features)]
@@ -415,25 +414,15 @@ class EpsilonGreedyDataLabels(object):
         self.perturbed_data = np.array(self.perturbed_data)
         self.perturbed_labels = self.classifier_fn(self.perturbed_data)
 
-    # Should vectorize this at some point
-    def run_sample(self, sample, eps_greedy_pred):
-        if np.argmax(self.gt_pred[0]) == np.argmax(eps_greedy_pred):
-            self.rewards[np.where(sample == 1)] += 1
-        # else:
-            # self.rewards[np.where(sample != 1)] += 1
-
     def run(self):
         self.generate_data()
         self.eps_greedy_preds = self.classifier_fn(self.eps_greedy_imgs)
 
-        for i in range(self.num_samples):
-            sample = self.eps_greedy_data[i]
-            eps_greedy_pred = self.eps_greedy_preds[i]
-            self.counts[np.where(sample == 1)] += 1
-            self.run_sample(sample, eps_greedy_pred)
+        same_pred_samples = np.where(np.argmax(self.eps_greedy_preds, axis=1) == np.argmax(self.gt_pred[0]))
+        self.rewards = self.eps_greedy_data[same_pred_samples].sum(axis=0)
+        self.counts += self.eps_greedy_data.sum(axis=0)
 
         self.q_vals = self.rewards / self.counts
         self.features = np.argsort(self.q_vals)[-self.num_features:]
-        self.generate_neighborhood_and_labels()
-        
+        self.generate_neighborhood_and_labels()        
 
