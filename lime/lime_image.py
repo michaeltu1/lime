@@ -142,7 +142,8 @@ class LimeImageExplainer(object):
                          trace=False,
                          timed=False,
                          time_classification=False,
-                         use_bandits=False):
+                         use_bandits=False,
+                         epsilon=0.1):
 
         """Generates explanations for a prediction.
 
@@ -214,7 +215,8 @@ class LimeImageExplainer(object):
 				      timed=timed,
 				      time_classification=time_classification,
 				      num_features=num_features,
-                                      use_bandits=True)
+                                      use_bandits=True,
+                                      epsilon=epsilon)
             data, labels = bandit.arrangements, bandit.perturbed_labels
             features_to_use = bandit.features
         else:
