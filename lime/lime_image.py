@@ -367,8 +367,8 @@ class EpsilonGreedyDataLabels(object):
         self.eps_greedy_imgs = []
         self.eps_greedy_preds = None
         self.rewards = None
-        self.counts = np.array([0.001] * num_superpixels)
-        self.q_vals = None
+        self.counts = np.array([0.0] * num_superpixels)
+        self.q_vals = np.array([epsilon] * num_superpixels)
         self.arrangements = []
         self.perturbed_data = []
         self.perturbed_labels = []
@@ -382,19 +382,22 @@ class EpsilonGreedyDataLabels(object):
             self.times["Average Epsilon-Greedy Image Creation Time"] = np.mean(self.times["Epsilon-Greedy Image Creation Time"])
             self.times["Average Perturbed Data Point Creation Time"] = np.mean(self.times["Perturbed Data Point Creation Time"])
 
-            for k, v in self.times:
-                print("{}: {} seconds".format(k, v)
+            del self.times["Epsilon-Greedy Image Creation Time"]
+            del self.times["Perturbed Data Point Creation Time"]
+
+            for k, v in self.times.items():
+                print("{}: {} seconds".format(k, v))
 
     # Used internally to decide how to generate the neighborhood
-    def generate_data(self):
+    def generate_data(self, num_samples):
 
         s = time.time()
-        for __ in range(self.num_samples):
-            self.eps_greedy_data.append(np.array([0 if np.random.random() < self.epsilon else 1 for _ in range(self.num_superpixels)]))
+        for __ in range(num_samples):
+            self.eps_greedy_data.append(np.array([0 if np.random.random() < eps else 1 for eps in self.q_vals]))
         self.eps_greedy_data = np.array(self.eps_greedy_data)
         self.times["Epsilon-Greedy Sampling Time"] = time.time() - s
 
-        for i in range(self.eps_greedy_data.shape[0]):
+        for i in range(num_samples):
             s = time.time()
             arr = self.eps_greedy_data[i]
             temp = copy.deepcopy(self.image)
@@ -437,20 +440,26 @@ class EpsilonGreedyDataLabels(object):
         self.times["Perturbed Data Classification Time"] = time.time() - s
 
     def run(self):
-        self.generate_data()
+        for i in range(10):
+            self.generate_data(10)
 
-        s = time.time()
-        self.eps_greedy_preds = self.classifier_fn(self.eps_greedy_imgs)
-        self.times["Epsilon-Greedy Image Classification Time"] = time.time() - s
+            s = time.time()
+            self.eps_greedy_preds = self.classifier_fn(self.eps_greedy_imgs)
+            self.times["Epsilon-Greedy Image Classification Time"] = time.time() - s
 
-        s = time.time()
-        same_pred_samples = np.where(np.argmax(self.eps_greedy_preds, axis=1) == np.argmax(self.gt_pred[0]))
-        self.rewards = self.eps_greedy_data[same_pred_samples].sum(axis=0)
-        self.counts += self.eps_greedy_data.sum(axis=0)
+            s = time.time()
+            same_pred_samples = np.where(np.argmax(self.eps_greedy_preds, axis=1) == np.argmax(self.gt_pred[0]))
+            self.rewards = self.eps_greedy_data[same_pred_samples].sum(axis=0) # calculated afresh every time
+            self.counts += self.eps_greedy_data.sum(axis=0)
+            self.q_vals = (np.divide(self.counts - 1, self.counts, out=np.zeros_like(self.counts), where=self.counts!=0).T * self.q_vals + \
+                           np.divide(np.ones_like(self.counts), self.counts, out=np.zeros_like(self.counts), where=self.counts!=0).T * self.rewards).T
 
-        self.q_vals = self.rewards / self.counts
+            self.eps_greedy_data = []
+            self.eps_greedy_imgs = []
+
+            self.times["Reward, Count, and Q-Value Eval Time"] = time.time() - s
+
         self.features = np.argsort(self.q_vals)[-self.num_features:]
-        self.times["Reward, Count, and Q-Value Eval Time"] = time.time() - s
 
         st = time.time()
         self.generate_neighborhood_and_labels()
