@@ -139,7 +139,6 @@ class LimeImageExplainer(object):
                          distance_metric='cosine',
                          model_regressor=None,
                          random_seed=None,
-                         trace=False,
                          timed=False,
                          time_classification=False,
                          use_bandits=False,
@@ -232,13 +231,15 @@ class LimeImageExplainer(object):
             metric=distance_metric
         ).ravel()
 
-        _trace = []
-
         ret_exp = ImageExplanation(image, segments)
         if top_labels:
             top = np.argsort(labels[0])[-top_labels:]
             ret_exp.top_labels = list(top)
             ret_exp.top_labels.reverse()
+        if top_labels == 1 and use_bandits:
+            ret_exp.segments = segments
+            ret_exp.local_exp[top[0]] = np.array([(ft, bandit.q_vals[ft]) for ft in features_to_use])
+            return ret_exp
         for label in top:
             (ret_exp.intercept[label],
              ret_exp.local_exp[label],
@@ -248,12 +249,6 @@ class LimeImageExplainer(object):
                 feature_selection=self.feature_selection,
                 timed=timed,
 	        used_features=features_to_use)
-
-            if trace:
-                _trace = [str(ret_exp.local_pred), round(ret_exp.score, 8)] + _trace
-
-        if trace:
-            print("{:>19}  {:<12}{:>12}  {:<12}{:>12}  {:<12}{:>12}  {:<12}{:>12}  {:<12}".format(*_trace))
 
         return ret_exp
 
@@ -374,16 +369,23 @@ class EpsilonGreedyDataLabels(object):
         self.perturbed_labels = []
         self.features = []
         self.times = {"Epsilon-Greedy Image Creation Time": [],
-                      "Perturbed Data Point Creation Time": []}
+                      "Perturbed Data Point Creation Time": [],
+                      "Epsilon-Greedy 10 Image Classification Time": [],
+                      "Reward, Count, and Q-Value Eval Time": []}
+
 
         self.run()
 
         if timed:
             self.times["Average Epsilon-Greedy Image Creation Time"] = np.mean(self.times["Epsilon-Greedy Image Creation Time"])
             self.times["Average Perturbed Data Point Creation Time"] = np.mean(self.times["Perturbed Data Point Creation Time"])
+            self.times["Average Epsilon-Greedy 10 Image Classification Time"] = np.mean(self.times["Epsilon-Greedy 10 Image Classification Time"])
+            self.times["Average Reward, Count, and Q-Value Eval Time"] = np.mean(self.times["Reward, Count, and Q-Value Eval Time"])
 
             del self.times["Epsilon-Greedy Image Creation Time"]
             del self.times["Perturbed Data Point Creation Time"]
+            del self.times["Epsilon-Greedy 10 Image Classification Time"]
+            del self.times["Reward, Count, and Q-Value Eval Time"]
 
             for k, v in self.times.items():
                 print("{}: {} seconds".format(k, v))
@@ -445,11 +447,11 @@ class EpsilonGreedyDataLabels(object):
 
             s = time.time()
             self.eps_greedy_preds = self.classifier_fn(self.eps_greedy_imgs)
-            self.times["Epsilon-Greedy Image Classification Time"] = time.time() - s
+            self.times["Epsilon-Greedy 10 Image Classification Time"].append(time.time() - s)
 
             s = time.time()
             same_pred_samples = np.where(np.argmax(self.eps_greedy_preds, axis=1) == np.argmax(self.gt_pred[0]))
-            self.rewards = self.eps_greedy_data[same_pred_samples].sum(axis=0) # calculated afresh every time
+            self.rewards = self.eps_greedy_data[same_pred_samples].sum(axis=0)
             self.counts += self.eps_greedy_data.sum(axis=0)
             self.q_vals = (np.divide(self.counts - 1, self.counts, out=np.zeros_like(self.counts), where=self.counts!=0).T * self.q_vals + \
                            np.divide(np.ones_like(self.counts), self.counts, out=np.zeros_like(self.counts), where=self.counts!=0).T * self.rewards).T
@@ -457,7 +459,7 @@ class EpsilonGreedyDataLabels(object):
             self.eps_greedy_data = []
             self.eps_greedy_imgs = []
 
-            self.times["Reward, Count, and Q-Value Eval Time"] = time.time() - s
+            self.times["Reward, Count, and Q-Value Eval Time"].append(time.time() - s)
 
         self.features = np.argsort(self.q_vals)[-self.num_features:]
 
