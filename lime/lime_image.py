@@ -236,10 +236,12 @@ class LimeImageExplainer(object):
             top = np.argsort(labels[0])[-top_labels:]
             ret_exp.top_labels = list(top)
             ret_exp.top_labels.reverse()
+        """
         if top_labels == 1 and use_bandits:
             ret_exp.segments = segments
             ret_exp.local_exp[top[0]] = np.array([(ft, bandit.q_vals[ft]) for ft in features_to_use])
             return ret_exp
+        """
         for label in top:
             (ret_exp.intercept[label],
              ret_exp.local_exp[label],
