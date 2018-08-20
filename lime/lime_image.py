@@ -464,6 +464,7 @@ class EpsilonGreedyDataLabels(object):
             self.times["Reward, Count, and Q-Value Eval Time"].append(time.time() - s)
 
         self.features = np.argsort(self.q_vals)[-self.num_features:]
+        self.num_features = min(self.num_features, len(self.features))
 
         st = time.time()
         self.generate_neighborhood_and_labels()
