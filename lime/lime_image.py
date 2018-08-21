@@ -10,7 +10,6 @@ import sklearn
 import sklearn.preprocessing
 from sklearn.utils import check_random_state
 from skimage.color import gray2rgb
-from ray.rllib.utils.timer import TimerStat
 
 from . import lime_base
 from .wrappers.scikit_image import SegmentationAlgorithm

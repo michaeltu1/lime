@@ -6,7 +6,6 @@ import numpy as np
 import time
 from sklearn.linear_model import Ridge, lars_path
 from sklearn.utils import check_random_state
-from ray.rllib.utils.timer import TimerStat
 
 
 class LimeBase(object):
